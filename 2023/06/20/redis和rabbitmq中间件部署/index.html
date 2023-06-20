@@ -440,7 +440,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 223 字
+        共 249 字
       </span>
     
     
@@ -461,7 +461,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 <p>上面出现了两个问题：</p>
 <ul>
 <li>1.第一个redis设置默认密码，不然服务中去验证会失败，通过在最后追加 <code>command: --requirepass &quot;123456&quot;</code> 来设置密码</li>
-<li>2.rabbitmq和我上面一样部署之后，需要进入到容器里面，安装插件具体操作步骤如下<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it rabbitmq-standalone /bin/bash</span><br><span class="line">cd /opt/rabbitmq/sbin/</span><br><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure></li>
+<li>2.rabbitmq和我上面一样部署之后，需要进入到容器里面，安装插件,才能看见管理页面，当然是否要安装管理页面，取决与你的需求，具体操作步骤如下<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it rabbitmq-standalone /bin/bash</span><br><span class="line">cd /opt/rabbitmq/sbin/</span><br><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure></li>
 </ul>
 
       </div>
