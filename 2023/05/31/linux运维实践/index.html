@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>Linux实践运维 - 知识，与你分享。</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="我的一些运维实践,碰到问题之后如何解决,常用的一些命令记录">
+    <meta name="author" content="Yum">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="Linux实践运维"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn{
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 960px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: var(--sec-bkg);
+    display: block;
+    padding: 0.9rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header>
+            
+<div class="header__left">
+	<a href="/" class="button"><span class="logo__text">我的笔记</span></a>
+</div>
+<div class="header__right">
+	<div class="navbar__menus">
+		
+	</div>
+	
+	<a href="/search/" class="button">
+		<div id="btn-search">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32">
+				<path
+					d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z">
+				</path>
+			</svg>
+		</div>
+	</a>
+	
+	<a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
+				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
+		</div>
+	</a>
+	<a href="javaScript:void(0);" class="dropdown-icon button">
+		<div id="btn-dropdown">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32" stroke-linecap="round">
+				<path
+					d="M903.43 561.52H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 204.31H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 918.73H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24z"
+					fill="currentColor"></path>
+			</svg>
+		</div>
+	</a>
+	<div class="dropdown-menus" id="dropdown-menus">
+		
+	</div>
+</div>
+
+        </header>
+        <div id="top"></div>
+        <div id="page-main" class="main-content">
+        <div class="mg-top">
+            
+
+<article class="page">
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>Linux实践运维</h3>
+    
+      <span class="post-meta-label">
+        Yum
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2023-05-31 12:43" pubdate>
+          2023-05-31
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 3k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-%E5%AE%9A%E6%97%B6%E5%A4%87%E4%BB%BDdocker-%E5%AE%B9%E5%99%A8%E9%87%8C%E9%9D%A2%E7%9A%84mysql"><span class="toc-number">2.</span> <span class="toc-text">创建定时任务 定时备份docker 容器里面的mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E5%A4%87%E4%BB%BD%E8%84%9A%E6%9C%AC"><span class="toc-number">2.0.1.</span> <span class="toc-text">1.创建备份脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="toc-number">2.0.2.</span> <span class="toc-text">2.创建定时任务执行脚本</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip"><span class="toc-number">3.</span> <span class="toc-text">给服务器设置固定ip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Centos7-%E9%98%B2%E7%81%AB%E5%A2%99%E5%BC%80%E6%94%BE%E7%AB%AF%E5%8F%A3"><span class="toc-number">4.</span> <span class="toc-text">Centos7+防火墙开放端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#windows%E5%BB%BA%E7%AB%8B%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%EF%BC%8CLinux%E4%B8%8B%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE"><span class="toc-number">5.</span> <span class="toc-text">windows建立共享文件夹，Linux下如何访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%85%E7%90%86docker%E5%8D%A0%E7%94%A8%E7%A9%BA%E9%97%B4"><span class="toc-number">6.</span> <span class="toc-text">清理docker占用空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86%E6%8C%87%E5%AE%9A%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%88%86%E5%88%AB%E6%89%93%E6%88%90%E7%8B%AC%E7%AB%8B%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%8C%85"><span class="toc-number">7.</span> <span class="toc-text">将指定目录下的所有文件分别打成独立的压缩包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%8D%E5%AF%86ssh%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA"><span class="toc-number">8.</span> <span class="toc-text">免密ssh登录远程主机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%94%9F%E6%88%90ssh%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5"><span class="toc-number">8.0.1.</span> <span class="toc-text">1.生成ssh公钥和私钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%B0%86%E5%85%AC%E9%92%A5%E4%BC%A0%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A"><span class="toc-number">8.0.2.</span> <span class="toc-text">2.将公钥传到服务器上</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%AE%8C%E6%88%90%E4%B8%8A%E8%BF%B0%E6%AD%A5%E9%AA%A4%E5%B7%B2%E7%BB%8F%E5%8F%AF%E4%BB%A5%E8%BF%9B%E8%A1%8CSSH%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E4%BA%86%EF%BC%8C%E9%A1%BA%E4%BE%BF%E9%85%8D%E7%BD%AE%E4%B8%80%E4%B8%8B-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%AB%E7%A7%B0"><span class="toc-number">8.0.3.</span> <span class="toc-text">3.完成上述步骤已经可以进行SSH免密登录了，顺便配置一下 服务器别称</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E6%89%93%E5%BC%80%EF%BD%9E-x2F-ssh-x2F-config%E6%96%87%E4%BB%B6%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E5%8F%AF%E4%BB%A5%E8%87%AA%E5%B7%B1%E5%88%9B%E5%BB%BA%EF%BC%8C%E6%8C%89%E7%85%A7%E5%A6%82%E4%B8%8B%E6%A0%BC%E5%BC%8F%E6%B7%BB%E5%8A%A0%E5%8D%B3%E5%8F%AF"><span class="toc-number">8.0.4.</span> <span class="toc-text">4.打开～&#x2F;.ssh&#x2F;config文件，如果没有可以自己创建，按照如下格式添加即可</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E6%B5%8B%E8%AF%95-ssh-%E5%88%AB%E7%A7%B0%E5%90%8D-%E5%8D%B3%E5%8F%AF%E7%99%BB%E5%BD%95"><span class="toc-number">8.0.5.</span> <span class="toc-text">5.测试  ssh 别称名  即可登录</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95-inotify-tools%E6%96%87%E4%BB%B6%E7%9B%91%E5%90%AC-Docker-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2"><span class="toc-number">9.</span> <span class="toc-text">SSH免密登录 + inotify-tools文件监听 + Docker 实现自动部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-SSH%E9%85%8D%E7%BD%AE%E4%B8%8A%E9%9D%A2%E5%B7%B2%E7%BB%8F%E6%9C%89%E4%BA%86"><span class="toc-number">9.0.1.</span> <span class="toc-text">1.SSH配置上面已经有了</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85inotify-tools"><span class="toc-number">9.0.2.</span> <span class="toc-text">2.安装inotify-tools</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%B7%BB%E5%8A%A0%E7%9B%91%E5%90%AC%E8%84%9A%E6%9C%AC%E5%92%8C%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC"><span class="toc-number">9.0.3.</span> <span class="toc-text">3.添加监听脚本和部署脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%90%8E%E5%8F%B0%E9%9D%99%E9%BB%98%E4%BA%91%E7%9B%91%E5%90%AC%E8%84%9A%E6%9C%AC%E5%8D%B3%E5%8F%AF"><span class="toc-number">9.0.4.</span> <span class="toc-text">4.后台静默云监听脚本即可</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#baloo"><span class="toc-number">10.</span> <span class="toc-text">baloo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%AD%E7%BD%91%E7%9B%91%E5%90%AC%E5%8F%8A%E9%87%8D%E5%90%AFdocker%E6%9C%8D%E5%8A%A1%E8%84%9A%E6%9C%AC-%E6%8C%82%E4%B8%8A%E5%AE%9A%E6%98%AF%E4%BB%BB%E5%8A%A1-%E5%8D%B3%E5%8F%AF%E6%97%B6%E5%88%BB%E9%80%9A%E8%BF%87%E7%BD%91%E7%BB%9C%E7%8A%B6%E6%80%81%E5%AF%B9%E6%9C%8D%E5%8A%A1"><span class="toc-number">11.</span> <span class="toc-text">断网监听及重启docker服务脚本,挂上定是任务,即可时刻通过网络状态对服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87JAVA%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE%E5%8F%8Adocker%E6%8C%82%E8%BD%BD%E9%85%8D%E7%BD%AE-%E5%AE%9E%E7%8E%B0docker%E5%86%85java%E6%9C%8D%E5%8A%A1%E5%87%BA%E7%8E%B0%E7%88%86%E5%86%85%E5%AD%98%E6%83%85%E5%86%B5%E6%97%B6%E8%87%AA%E5%8A%A8%E9%87%8D%E5%90%AFdocker%E6%9C%8D%E5%8A%A1"><span class="toc-number">12.</span> <span class="toc-text">通过JAVA启动参数配置及docker挂载配置,实现docker内java服务出现爆内存情况时自动重启docker服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Centos%E5%86%85%E6%A0%B8%E5%8D%87%E7%BA%A7"><span class="toc-number">13.</span> <span class="toc-text">Centos内核升级</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%9B%B4%E6%96%B0yum%E6%BA%90%E4%BB%93%E5%BA%93"><span class="toc-number">13.0.1.</span> <span class="toc-text">1.更新yum源仓库</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6%E5%88%B0%E6%8C%87%E5%AE%9A%E7%9B%AE%E5%BD%95"><span class="toc-number">14.</span> <span class="toc-text">批量下载文件到指定目录</span></a></li></ol>
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1. df -h 查看磁盘占用</span><br><span class="line">2. find / -type f -size +800M  查找磁盘上占用超过800M的文件</span><br><span class="line">3. find / -type f -size +800M 2&gt;/dev/null | sort -hr | xargs ls -l 查找大于800M的文件并忽略权限不足提示 然后按照从大小到排序，然后在查看列表展示</span><br><span class="line">4.对指定目录下超过指定大小的文件名称后缀是指定内容的文件进行置空操作</span><br><span class="line">find /var/lib/docker/containers/ -type f -size +10M -name &quot;*-json.log&quot; -exec truncate -s 0 &#123;&#125; \;</span><br><span class="line">5.对指定相同后缀名的文件进行批量修改</span><br><span class="line">find ./ -name &quot;*.png&quot; | awk -F &quot;-min.png&quot; &#x27;&#123;print $1&#125;&#x27; | xargs -i -t mv ./&#123;&#125;-min.png ./&#123;&#125;.png</span><br><span class="line">4. uname -r 查看linux 的内核版本</span><br><span class="line">5. 添加用户组并添加当前用户到该用户组</span><br><span class="line">sudo groupadd 用户组</span><br><span class="line">sudo gpasswd -a username  用户组</span><br><span class="line">8.清除内存中buff/cache占用 需要在root环境下执行</span><br><span class="line">echo 3&gt; /proc/sys/vm/drop_caches</span><br><span class="line">9.查看指定文件md5值，判断文件是否被修改过</span><br><span class="line">md5sum 文件</span><br><span class="line">10.删除当前目录下名称叫做target的文件夹</span><br><span class="line">find ./ -d -name &quot;target&quot; | xargs rm -rf</span><br><span class="line">11.找出当前目录下 排名前十的占用</span><br><span class="line">du -sh ./* | sort -hr | head</span><br><span class="line">12.查看当前机器ip 只显示ip</span><br><span class="line">ip addr show|grep -A1 &#x27;inet [^f:]&#x27;|sed -nr &#x27;s#^ +inet ([0-9.]+)/[0-9]+ brd [0-9./]+ scope global .*#\1#p&#x27;</span><br><span class="line">10.查看网卡</span><br><span class="line">nmcli connection show</span><br><span class="line">11 如何查看容器使用了哪些进程号</span><br><span class="line">		11.1 docker ps  --no-trunc 查看当前容器的长id</span><br><span class="line">		11.2 cd /sys/fs/cgroup/memory/docker/容器完整id  去完整目录下</span><br><span class="line">		11.3 cat  cgroup.procs</span><br><span class="line">12 查看linuxfile占用</span><br><span class="line">lsof -n | awk &#x27;&#123;print $2&#125;&#x27; | sort | uniq -c | sort -nr | more</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建定时任务-定时备份docker-容器里面的mysql"><a href="#创建定时任务-定时备份docker-容器里面的mysql" class="headerlink" title="创建定时任务 定时备份docker 容器里面的mysql"></a>创建定时任务 定时备份docker 容器里面的mysql</h2><h4 id="1-创建备份脚本"><a href="#1-创建备份脚本" class="headerlink" title="1.创建备份脚本"></a>1.创建备份脚本</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -i mysql /bin/bash -c  <span class="string">&#x27;/usr/bin/mysqldump -hlocalhost -P3306 -uroot -pwindao2021  --databases eims --comments --compact --lock-tables &gt; /var/lib/mysql/data/databackup/eims.sql&#x27;</span></span><br><span class="line">current=`<span class="built_in">date</span> <span class="string">&quot;+%Y%m%d%H%M%S&quot;</span>`</span><br><span class="line"><span class="built_in">mkdir</span> -p /data/mysql/backup/</span><br><span class="line">docker <span class="built_in">cp</span> mysql:/var/lib/mysql/data/databackup/eims.sql /data/mysql/backup/<span class="variable">$current</span>.sql</span><br></pre></td></tr></table></figure>
+<h4 id="2-创建定时任务执行脚本"><a href="#2-创建定时任务执行脚本" class="headerlink" title="2.创建定时任务执行脚本"></a>2.创建定时任务执行脚本</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1.添加cron表达式</span><br><span class="line">crontab -e <span class="comment">#进入编辑模式</span></span><br><span class="line">列如:</span><br><span class="line">0 06 * * * ~/backup.sh  </span><br><span class="line">第一个 0代表每个小时的第0分钟</span><br><span class="line">第二个 06代表每天的凌晨6点钟</span><br><span class="line">第三个 * 代表每个月中的任意一天</span><br><span class="line">第四个 * 代表每年中的任意一个月</span><br><span class="line">第五个 * 代表每个星期中的任意一天</span><br><span class="line">注意 第三个位和第五位尽量不要重复</span><br></pre></td></tr></table></figure>
+<h2 id="给服务器设置固定ip"><a href="#给服务器设置固定ip" class="headerlink" title="给服务器设置固定ip"></a>给服务器设置固定ip</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/sysconfig/network-scripts/</span><br><span class="line">vim ifcfg-eno1</span><br><span class="line">内容如下</span><br><span class="line">TYPE=<span class="string">&quot;Ethernet&quot;</span></span><br><span class="line"><span class="comment">#MAC地址</span></span><br><span class="line">HWADDR=<span class="string">&quot;a8:5e:45:9f:69:ea&quot;</span></span><br><span class="line">PROXY_METHOD=<span class="string">&quot;none&quot;</span></span><br><span class="line">BROWSER_ONLY=<span class="string">&quot;no&quot;</span></span><br><span class="line"><span class="comment">#static代表固定ip DHCP代表路由器分配</span></span><br><span class="line">BOOTPROTO=<span class="string">&quot;static&quot;</span></span><br><span class="line">DEFROUTE=<span class="string">&quot;yes&quot;</span></span><br><span class="line"><span class="comment">#IP地址</span></span><br><span class="line">IPADDR=192.168.8.153</span><br><span class="line"><span class="comment">#子网掩码</span></span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line"><span class="comment">#网关</span></span><br><span class="line">GATEWAY=192.168.10.1</span><br><span class="line"><span class="comment">#dns1 </span></span><br><span class="line">指向路由器ip        </span><br><span class="line">DNS1=192.168.10.1</span><br><span class="line"><span class="comment">#dns2指向运营商dns服务器</span></span><br><span class="line">DNS2=8.8.8.8</span><br><span class="line">IPV4_FAILURE_FATAL=<span class="string">&quot;no&quot;</span></span><br><span class="line">IPV6INIT=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_AUTOCONF=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_DEFROUTE=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_FAILURE_FATAL=<span class="string">&quot;no&quot;</span></span><br><span class="line">IPV6_ADDR_GEN_MODE=<span class="string">&quot;stable-privacy&quot;</span></span><br><span class="line">NAME=<span class="string">&quot;eno1&quot;</span></span><br><span class="line">UUID=<span class="string">&quot;cd7158bf-97de-4c11-aa53-8119c588a202&quot;</span></span><br><span class="line">DEVICE=<span class="string">&quot;eno1&quot;</span>找出当前目录下 排名前十的占用</span><br><span class="line"><span class="built_in">du</span> -sh ./* | <span class="built_in">sort</span> -hr | <span class="built_in">head</span></span><br><span class="line">ONBOOT=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_PRIVACY=<span class="string">&quot;no&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Centos7-防火墙开放端口"><a href="#Centos7-防火墙开放端口" class="headerlink" title="Centos7+防火墙开放端口"></a>Centos7+防火墙开放端口</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开机启动防火墙</span></span><br><span class="line">systemctl <span class="built_in">enable</span> firewalld</span><br><span class="line"><span class="comment">#开机禁用防火墙</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line"><span class="comment">#启动防火墙(临时)</span></span><br><span class="line">systemctl start firewalld</span><br><span class="line"><span class="comment">#关闭防火墙(临时)</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line"><span class="comment">#永久开放80端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent  </span><br><span class="line"><span class="comment">#重新初始化防火墙 一般新开端口之后要重新初始化 不然可能新开的端口不生效</span></span><br><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="comment">#查看已经开放的端口列表</span></span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br></pre></td></tr></table></figure>
+<h2 id="windows建立共享文件夹，Linux下如何访问"><a href="#windows建立共享文件夹，Linux下如何访问" class="headerlink" title="windows建立共享文件夹，Linux下如何访问"></a>windows建立共享文件夹，Linux下如何访问</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> share</span><br><span class="line">sudo mount -t cifs -o username=username,password=password //xxx.xxx.xxx.xxx/share ./share</span><br></pre></td></tr></table></figure>
+
+<h2 id="清理docker占用空间"><a href="#清理docker占用空间" class="headerlink" title="清理docker占用空间"></a>清理docker占用空间</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker image prune --all</span><br><span class="line">docker system prune -a</span><br></pre></td></tr></table></figure>
+
+<h2 id="将指定目录下的所有文件分别打成独立的压缩包"><a href="#将指定目录下的所有文件分别打成独立的压缩包" class="headerlink" title="将指定目录下的所有文件分别打成独立的压缩包"></a>将指定目录下的所有文件分别打成独立的压缩包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls | xargs -i zip -r &#123;&#125;.zip &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="免密ssh登录远程主机"><a href="#免密ssh登录远程主机" class="headerlink" title="免密ssh登录远程主机"></a>免密ssh登录远程主机</h2><h4 id="1-生成ssh公钥和私钥"><a href="#1-生成ssh公钥和私钥" class="headerlink" title="1.生成ssh公钥和私钥"></a>1.生成ssh公钥和私钥</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;你的邮箱地址&quot;</span><br><span class="line">会在系统用户更目录下.ssh文件夹生成id_rsa(私钥)、id_rsa.pub（公钥）文件</span><br><span class="line">然后再对应的平台上添加ssh公钥 这个好操作</span><br><span class="line">然后讲私钥添加到本地ssh管理</span><br><span class="line">win下需要执行</span><br><span class="line">1.exec ssh-agent bash</span><br><span class="line">2.eval ssh-agent -s</span><br><span class="line">3.ssh-add &quot;id_rsa&quot;</span><br><span class="line">linux 应该只需要执行3即可</span><br></pre></td></tr></table></figure>
+<h4 id="2-将公钥传到服务器上"><a href="#2-将公钥传到服务器上" class="headerlink" title="2.将公钥传到服务器上"></a>2.将公钥传到服务器上</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ~/.ssh/authorized_keys user@IP:~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<h4 id="3-完成上述步骤已经可以进行SSH免密登录了，顺便配置一下-服务器别称"><a href="#3-完成上述步骤已经可以进行SSH免密登录了，顺便配置一下-服务器别称" class="headerlink" title="3.完成上述步骤已经可以进行SSH免密登录了，顺便配置一下 服务器别称"></a>3.完成上述步骤已经可以进行SSH免密登录了，顺便配置一下 服务器别称</h4><h4 id="4-打开～-x2F-ssh-x2F-config文件，如果没有可以自己创建，按照如下格式添加即可"><a href="#4-打开～-x2F-ssh-x2F-config文件，如果没有可以自己创建，按照如下格式添加即可" class="headerlink" title="4.打开～&#x2F;.ssh&#x2F;config文件，如果没有可以自己创建，按照如下格式添加即可"></a>4.打开～&#x2F;.ssh&#x2F;config文件，如果没有可以自己创建，按照如下格式添加即可</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host 别称名</span><br><span class="line">    Hostname 服务器ip地址</span><br><span class="line">    User 登录用户</span><br><span class="line">    Port ssh登录端口</span><br></pre></td></tr></table></figure>
+<h4 id="5-测试-ssh-别称名-即可登录"><a href="#5-测试-ssh-别称名-即可登录" class="headerlink" title="5.测试  ssh 别称名  即可登录"></a>5.测试  ssh 别称名  即可登录</h4><h2 id="SSH免密登录-inotify-tools文件监听-Docker-实现自动部署"><a href="#SSH免密登录-inotify-tools文件监听-Docker-实现自动部署" class="headerlink" title="SSH免密登录 + inotify-tools文件监听 + Docker 实现自动部署"></a>SSH免密登录 + inotify-tools文件监听 + Docker 实现自动部署</h2><h4 id="1-SSH配置上面已经有了"><a href="#1-SSH配置上面已经有了" class="headerlink" title="1.SSH配置上面已经有了"></a>1.SSH配置上面已经有了</h4><h4 id="2-安装inotify-tools"><a href="#2-安装inotify-tools" class="headerlink" title="2.安装inotify-tools"></a>2.安装inotify-tools</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2.1首先安装autoreconf 因为最新版本的inotify-tools 使用autoreconf配置</span><br><span class="line">yum  -y install autoconf automake libtool</span><br><span class="line">2.2去https://codeload.github.com/inotify-tools/inotify-tools/tar.gz/refs/tags/3.22.6.0/inotify-tools-3.22.6.0.tar.gz 下载源文件</span><br><span class="line">2.3 解压 tar -zxvf inotify-tools-3.22.6.0.tar.gz 并进入解压完目录</span><br><span class="line">2.4 执行脚本./autogen.sh 生成configure 配置脚本</span><br><span class="line">2.5 ./configure --prefix=/usr/local/inotify</span><br><span class="line">2.6 make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="3-添加监听脚本和部署脚本"><a href="#3-添加监听脚本和部署脚本" class="headerlink" title="3.添加监听脚本和部署脚本"></a>3.添加监听脚本和部署脚本</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1.监听脚本</span><br><span class="line">#!/bin/sh  </span><br><span class="line"># 监视的文件或目录  </span><br><span class="line">filename=target/yatai-school-platform-1.0-SNAPSHOT.jar  </span><br><span class="line"># 监视发现有增、删、改时执行的脚本  </span><br><span class="line">script=run.sh  </span><br><span class="line">/usr/local/inotify/bin/inotifywait -mq  --format  &#x27;%e&#x27;  --event close_write $filename | while read event  </span><br><span class="line">do  </span><br><span class="line">	case  $event  in CLOSE_WRITE,CLOSE) bash $script ;;  </span><br><span class="line">	esac  </span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">2.打包脚本</span><br><span class="line">docker rm sync -f  </span><br><span class="line">docker rmi sync:v1.0 -f  </span><br><span class="line">docker build -t sync:v1.0 .  </span><br><span class="line">docker run -itd -p 9090:9090 -v /mnt:/mnt -v /xxx-java/data:/xxx-java/data -v /home/sync/config:/config --restart=always --name sync sync:v1.0</span><br></pre></td></tr></table></figure>
+<h4 id="4-后台静默云监听脚本即可"><a href="#4-后台静默云监听脚本即可" class="headerlink" title="4.后台静默云监听脚本即可"></a>4.后台静默云监听脚本即可</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ./monitor.sh &amp;</span><br></pre></td></tr></table></figure>
+
+<h2 id="baloo"><a href="#baloo" class="headerlink" title="baloo"></a>baloo</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 balooctl suspend // 立即停止</span><br><span class="line">2 balooctl disable // 停用框架</span><br><span class="line">删除index</span><br><span class="line">rm ~/.local/share/baloo/ -rf</span><br></pre></td></tr></table></figure>
+
+<h2 id="断网监听及重启docker服务脚本-挂上定是任务-即可时刻通过网络状态对服务"><a href="#断网监听及重启docker服务脚本-挂上定是任务-即可时刻通过网络状态对服务" class="headerlink" title="断网监听及重启docker服务脚本,挂上定是任务,即可时刻通过网络状态对服务"></a>断网监听及重启docker服务脚本,挂上定是任务,即可时刻通过网络状态对服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">server=&quot;www.baidu.com&quot;</span><br><span class="line">temp=$&#123;HOME&#125;/status.temp</span><br><span class="line">container_name=platform</span><br><span class="line">if [ ! -d $temp ];then</span><br><span class="line">    touch $temp</span><br><span class="line">fi</span><br><span class="line">chmod 777 $temp</span><br><span class="line">echo `date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span><br><span class="line">ping $server -W 5 -c 2</span><br><span class="line">if [ $? != 0 ];then</span><br><span class="line">    echo &quot;网络断开了!!&quot;</span><br><span class="line">    echo &quot;NETWORK_CONNECTING=FALSE&quot; &gt; $temp</span><br><span class="line">else</span><br><span class="line">    echo &quot;网络连上了!!&quot;</span><br><span class="line">    result=$(echo `head -n +1 $temp | cut -d= -f 2` | grep &quot;FALSE&quot;)</span><br><span class="line">    echo $result</span><br><span class="line">    if [ ! -z $result ];then</span><br><span class="line">        echo &quot;2222网络连上了!!!!&quot;</span><br><span class="line">        docker restart $container_name</span><br><span class="line">    fi</span><br><span class="line">    echo &quot;NETWORK_CONNECTING=TRUE&quot; &gt; $temp</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<h2 id="通过JAVA启动参数配置及docker挂载配置-实现docker内java服务出现爆内存情况时自动重启docker服务"><a href="#通过JAVA启动参数配置及docker挂载配置-实现docker内java服务出现爆内存情况时自动重启docker服务" class="headerlink" title="通过JAVA启动参数配置及docker挂载配置,实现docker内java服务出现爆内存情况时自动重启docker服务"></a>通过JAVA启动参数配置及docker挂载配置,实现docker内java服务出现爆内存情况时自动重启docker服务</h2><p>1.在Dockerfile中最后执行jar启动命令上添加 -XX:OnOutOfMemoryError和-XX:OnError 用于当出现OutOfMemory或者Error时执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENTRYPOINT java -XX:OnOutOfMemoryError=&quot;docker restart service&quot; -XX:OnError=&quot;docker restart service&quot; -jar $JAR_FILE</span><br></pre></td></tr></table></figure>
+<p>2.在容器启动是挂载docker.sock和docker实现在容器内操作docker</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd -p 8080:8080 --name service -e  -v /var/run/docker.sock:/var/run/docker.sock  -v /usr/bin/docker:/usr/bin/docker   --restart=always  xxxx:latest</span><br></pre></td></tr></table></figure>
+
+<h2 id="Centos内核升级"><a href="#Centos内核升级" class="headerlink" title="Centos内核升级"></a>Centos内核升级</h2><h4 id="1-更新yum源仓库"><a href="#1-更新yum源仓库" class="headerlink" title="1.更新yum源仓库"></a>1.更新yum源仓库</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">$ yum -y update  </span><br><span class="line">```  </span><br><span class="line">启用 ELRepo 仓库  </span><br><span class="line">ELRepo 仓库是基于社区的用于企业级 Linux 仓库，提供对 RedHat Enterprise (RHEL) 和 其他基于 RHEL的 Linux 发行版（CentOS、Scientific、Fedora 等）的支持。  </span><br><span class="line">ELRepo 聚焦于和硬件相关的软件包，包括文件系统驱动、显卡驱动、网络驱动、声卡驱动和摄像头驱动等。  </span><br><span class="line">#### 2.导入ELRepo仓库的公共密钥  </span><br><span class="line">```  </span><br><span class="line">rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org  </span><br><span class="line">```  </span><br><span class="line">#### 3.安装ELRepo仓库的yum源  </span><br><span class="line">```  </span><br><span class="line">rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm  </span><br><span class="line">```  </span><br><span class="line">#### 4.查看可用的系统内核包  </span><br><span class="line">可以看到4.4和4.18两个版本  </span><br><span class="line">```  </span><br><span class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;elrepo-kernel&quot; list available  </span><br><span class="line">Loaded plugins: fastestmirror  </span><br><span class="line">Loading mirror speeds from cached hostfile  </span><br><span class="line"> * elrepo-kernel: mirrors.tuna.tsinghua.edu.cnelrepo-kernel                                                                                                                                                                 | 2.9 kB  00:00:00     elrepo-kernel/primary_db                                                                                                                                                      | 1.8 MB  00:00:03     Available Packages  </span><br><span class="line">kernel-lt.x86_64                                                                                  4.4.155-1.el7.elrepo                                                                  elrepo-kernel  </span><br><span class="line">kernel-lt-devel.x86_64                                                                            4.4.155-1.el7.elrepo                                                                  elrepo-kernel  </span><br><span class="line">kernel-lt-doc.noarch                                                                              4.4.155-1.el7.elrepo                                                                  elrepo-kernel  </span><br><span class="line">kernel-lt-headers.x86_64                                                                          4.4.155-1.el7.elrepo                                                                  elrepo-kernel  </span><br><span class="line">kernel-lt-tools.x86_64                                                                            4.4.155-1.el7.elrepo                                                                  elrepo-kernel  </span><br><span class="line">kernel-lt-tools-libs.x86_64                                                                       4.4.155-1.el7.elrepo                                                                  elrepo-kernel  </span><br><span class="line">kernel-lt-tools-libs-devel.x86_64                                                                 4.4.155-1.el7.elrepo                                                                  elrepo-kernel  </span><br><span class="line">kernel-ml.x86_64                                                                                  4.18.7-1.el7.elrepo                                                                   elrepo-kernel  </span><br><span class="line">kernel-ml-devel.x86_64                                                                            4.18.7-1.el7.elrepo                                                                   elrepo-kernel  </span><br><span class="line">kernel-ml-doc.noarch                                                                              4.18.7-1.el7.elrepo                                                                   elrepo-kernel  </span><br><span class="line">kernel-ml-headers.x86_64                                                                          4.18.7-1.el7.elrepo                                                                   elrepo-kernel  </span><br><span class="line">kernel-ml-tools.x86_64                                                                            4.18.7-1.el7.elrepo                                                                   elrepo-kernel  </span><br><span class="line">kernel-ml-tools-libs.x86_64                                                                       4.18.7-1.el7.elrepo                                                                   elrepo-kernel  </span><br><span class="line">kernel-ml-tools-libs-devel.x86_64                                                                 4.18.7-1.el7.elrepo                                                                   elrepo-kernel  </span><br><span class="line">perf.x86_64                                                                                       4.18.7-1.el7.elrepo                                                                   elrepo-kernel  </span><br><span class="line">python-perf.x86_64                                                                                4.18.7-1.el7.elrepo                                                                   elrepo-  </span><br><span class="line">```  </span><br><span class="line">#### 5.安装最新版本内核  </span><br><span class="line">```  </span><br><span class="line">$ yum --enablerepo=elrepo-kernel install kernel-ml  </span><br><span class="line">```  </span><br><span class="line">--enablerepo 选项开启 CentOS 系统上的指定仓库。默认开启的是 elrepo，这里用 elrepo-kernel 替换。  </span><br><span class="line">#### 6.设置 grub2  </span><br><span class="line">内核安装好后，需要设置为默认启动选项并重启后才会生效  </span><br><span class="line">查看系统上的所有可用内核：  </span><br><span class="line">```  </span><br><span class="line">$ sudo awk -F\&#x27; &#x27;$1==&quot;menuentry &quot; &#123;print i++ &quot; : &quot; $2&#125;&#x27; /etc/grub2.cfg  </span><br><span class="line">0 : CentOS Linux (4.18.7-1.el7.elrepo.x86_64) 7 (Core)  </span><br><span class="line">1 : CentOS Linux (3.10.0-862.11.6.el7.x86_64) 7 (Core)  </span><br><span class="line">2 : CentOS Linux (3.10.0-514.el7.x86_64) 7 (Core)  </span><br><span class="line">3 : CentOS Linux (0-rescue-063ec330caa04d4baae54c6902c62e54) 7 (Core)  </span><br><span class="line">```  </span><br><span class="line">设置新的内核为grub2的默认版本  </span><br><span class="line">服务器上存在4 个内核，我们要使用 4.18 这个版本，可以通过 grub2-set-default 0 命令或编辑 /etc/default/grub 文件来设置  </span><br><span class="line">方法1、通过 grub2-set-default 0 命令设置  </span><br><span class="line">其中 0 是上面查询出来的可用内核  </span><br><span class="line">```  </span><br><span class="line">grub2-set-default 0  </span><br><span class="line">```  </span><br><span class="line">方法2、编辑 /etc/default/grub 文件  </span><br><span class="line">设置 GRUB_DEFAULT=0，通过上面查询显示的编号为 0 的内核作为默认内核：  </span><br><span class="line">```  </span><br><span class="line">$ vim /etc/default/grub  </span><br><span class="line">GRUB_TIMEOUT=5  </span><br><span class="line">GRUB_DISTRIBUTOR=&quot;$(sed &#x27;s, release .*$,,g&#x27; /etc/system-release)&quot;  </span><br><span class="line">GRUB_DEFAULT=0  </span><br><span class="line">GRUB_DISABLE_SUBMENU=true  </span><br><span class="line">GRUB_TERMINAL_OUTPUT=&quot;console&quot;  </span><br><span class="line">GRUB_CMDLINE_LINUX=&quot;crashkernel=auto rd.lvm.lv=cl/root rhgb quiet&quot;  </span><br><span class="line">GRUB_DISABLE_RECOVERY=&quot;true&quot;  </span><br><span class="line">```  </span><br><span class="line">生成 grub 配置文件并重启  </span><br><span class="line">```  </span><br><span class="line">$ grub2-mkconfig -o /boot/grub2/grub.cfg  </span><br><span class="line">Generating grub configuration file ...  </span><br><span class="line">Found linux image: /boot/vmlinuz-4.18.7-1.el7.elrepo.x86_64  </span><br><span class="line">Found initrd image: /boot/initramfs-4.18.7-1.el7.elrepo.x86_64.img  </span><br><span class="line">Found linux image: /boot/vmlinuz-3.10.0-862.11.6.el7.x86_64  </span><br><span class="line">Found initrd image: /boot/initramfs-3.10.0-862.11.6.el7.x86_64.img  </span><br><span class="line">Found linux image: /boot/vmlinuz-3.10.0-514.el7.x86_64  </span><br><span class="line">Found initrd image: /boot/initramfs-3.10.0-514.el7.x86_64.img  </span><br><span class="line">Found linux image: /boot/vmlinuz-0-rescue-063ec330caa04d4baae54c6902c62e54  </span><br><span class="line">Found initrd image: /boot/initramfs-0-rescue-063ec330caa04d4baae54c6902c62e54.img  </span><br><span class="line">done  </span><br><span class="line">```  </span><br><span class="line">```  </span><br><span class="line">$ reboot  </span><br><span class="line">```  </span><br><span class="line">#### 7.验证  </span><br><span class="line">```  </span><br><span class="line">$ uname -r  </span><br><span class="line">4.18.7-1.el7.elrepo.x86_64  </span><br><span class="line">```  </span><br><span class="line">#### 8.删除旧内核（可选）  </span><br><span class="line">查看系统中全部的内核：  </span><br><span class="line">```  </span><br><span class="line">$ rpm -qa | grep kernel  </span><br><span class="line">kernel-3.10.0-514.el7.x86_64  </span><br><span class="line">kernel-ml-4.18.7-1.el7.elrepo.x86_64  </span><br><span class="line">kernel-tools-libs-3.10.0-862.11.6.el7.x86_64  </span><br><span class="line">kernel-tools-3.10.0-862.11.6.el7.x86_64  </span><br><span class="line">kernel-3.10.0-862.11.6.el7.x86_64  </span><br><span class="line">```  </span><br><span class="line">方法1、yum remove 删除旧内核的 RPM 包  </span><br><span class="line">```  </span><br><span class="line">$ yum remove kernel-3.10.0-514.el7.x86_64 \  </span><br><span class="line">kernel-tools-libs-3.10.0-862.11.6.el7.x86_64 \  </span><br><span class="line">kernel-tools-3.10.0-862.11.6.el7.x86_64 \  </span><br><span class="line">kernel-3.10.0-862.11.6.el7.x86_64  </span><br><span class="line">```  </span><br><span class="line">方法2、yum-utils 工具  </span><br><span class="line">如果安装的内核不多于 3 个，yum-utils 工具不会删除任何一个。只有在安装的内核大于 3 个时，才会自动删除旧内核。  </span><br><span class="line">安装yum-utils  </span><br><span class="line">```  </span><br><span class="line">$ yum install yum-utils  </span><br><span class="line">```  </span><br><span class="line">删除旧版本　　  </span><br><span class="line">```  </span><br><span class="line">package-cleanup --oldkernels  </span><br></pre></td></tr></table></figure>
+
+<h2 id="批量下载文件到指定目录"><a href="#批量下载文件到指定目录" class="headerlink" title="批量下载文件到指定目录"></a>批量下载文件到指定目录</h2><p>命令:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -i &#123;&#125; -P &#123;&#125;  -c --no-check-certificate --random-wait -r -N -nH -t 5 -T 60 -w 10 -q</span><br></pre></td></tr></table></figure>
+<p>解释:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-i      --input file=在本地或外部file中找到的file下载URL</span><br><span class="line">-P     --directory prefix=prefix将文件保存到prefix/  目录</span><br><span class="line">-c      --继续获取部分下载的文件</span><br><span class="line">-r      --递归指定递归下载</span><br><span class="line">-N     --时间戳不会重新检索文件，除非比本地文件更新</span><br><span class="line">-nH   --无主机目录不会创建主机目录</span><br><span class="line">-t      --trys=NUMBER将重试次数设置为NUMBER（0个未限制）</span><br><span class="line">-T     --timeout=SECONDS将所有超时值设置为SECONDS</span><br><span class="line">-w    --wait=秒在两次检索之间等待秒</span><br><span class="line">-q     --quiet quiet（无输出）</span><br></pre></td></tr></table></figure>
+
+
+      </div>
+    </div>
+</div>
+
+<div class="post-category">
+
+    <div id="p-meta-i">
+        
+          
+              
+                <a class="hover-with-bg" href="/tags/Linux%E5%AE%9E%E8%B7%B5%E8%BF%90%E7%BB%B4/"># Linux实践运维</a>
+              
+          
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+
+  <div class="post-copyright">
+    <p style="margin: 5px 0;">文章作者：<a href="/">Yum</a></p>
+    <p style="margin: 5px 0;">文章链接：<a href="https://blog.lce.land/2023/05/31/linux%E8%BF%90%E7%BB%B4%E5%AE%9E%E8%B7%B5/">https://blog.lce.land/2023/05/31/linux%E8%BF%90%E7%BB%B4%E5%AE%9E%E8%B7%B5/</a></p>
+    <p style="margin: 5px 0;">版权声明：本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处，谢谢。</p>
+  </div>
+  
+</div>
+
+</article>
+
+
+        </div>
+        
+<footer class="text-center">
+    
+    
+    
+    
+    
+    <p>&copy;  2020 - 2023&nbsp;&nbsp;有限的时间卷无限的知识</p>
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p>
+    
+    
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+    
+    
+      <a class="toc-btn" id="share-btn"><i>
+        <svg t="1670124379155" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2683" width="25" height="25"><path d="M395.946667 234.666667v64H256v469.333333h512V522.666667h64V768a64 64 0 0 1-64 64H256a64 64 0 0 1-64-64V298.666667a64 64 0 0 1 64-64h139.946667z m335.850666-87.914667l150.848 150.826667-158.378666 158.4-45.269334-45.248L748.394667 341.333333H672c-121.685333 0-220.714667 97.024-223.914667 217.941334L448 565.333333v85.333334h-64v-85.333334C384 406.272 512.938667 277.333333 672 277.333333h99.861333l-85.312-85.333333 45.248-45.248z" p-id="2684" fill="var(--first-text-color)"></path></svg>
+      </i></a>
+    
+    <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+      <i id="i-up"></i>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+    <script>
+        query("#share-btn")[0].onclick = async () => {
+            let url = `${location.protocol}//${location.hostname}${location.port ? ":"+location.port:location.port}${location.pathname}#read=${sessionStorage.getItem(location.pathname+"_read_y") || ""}`;
+            try {
+                await navigator.clipboard.writeText(url);
+                prompt_core("分享链接已经复制至剪贴板", 4800, true);
+            } catch(e) {
+                prompt_core("分享链接复制失败，请手动复制<br/>"+url, 4800, false);
+            }
+        }
+    </script>
+
+
+
+
+
+
+
+    <script>
+        const getScrollPosition = (el = window) => ({
+            x: el.pageXOffset !== undefined ? el.pageXOffset : el.scrollLeft,
+            y: el.pageYOffset !== undefined ? el.pageYOffset : el.scrollTop
+        });
+        // 此处的 750 是「页面元素的最大宽度」
+        var wx = document.getElementsByClassName("article-m")[0].clientWidth;
+        var wy = document.getElementsByClassName("article-m")[0].clientHeight;
+        function windowScroll() {
+            // 反复修改 确保页面尺寸不改变
+            wx = document.getElementsByClassName("article-m")[0].clientWidth;
+            wy = document.getElementsByClassName("article-m")[0].clientHeight;
+            let y = Math.round(getScrollPosition().y);
+            // console.log(y);
+            // 组合字符串，同时记录页面坐标，页面宽度和高度
+            let p = `${y}:${wx}:${wy}`;
+            // 写入到 sessionStorage 中
+            sessionStorage.setItem(location.pathname + "_read_y", p);
+        }
+        // URL 中是否包含传递的坐标信息
+        setTimeout(() => {
+            if (location.hash.split("#read=").length > 1) {
+                prompt_core("已有阅读进度，正在跳转", 4800, true);
+                // 分离字符串
+                let read_y = location.hash.split("#read=")[1];
+                read_y = read_y.split(":");
+                // 组合乘积，顺滑移动至坐标
+                window.scrollTo({top: Math.round(Number(read_y[0]) * Number(read_y[1] * Number(read_y[2] / wx / wy))), behavior: "smooth"});
+            } else {
+                // 从 sessionStorage 中获取
+                let read_y = sessionStorage.getItem(location.pathname + "_read_y") || "0:0:0";
+                read_y = read_y.split(":");
+                if (read_y[0] != "0") prompt_core("已有阅读进度，正在跳转", 4800, true);
+                window.scrollTo({top: Math.round(Number(read_y[0]) * Number(read_y[1] * Number(read_y[2] / wx / wy))), behavior: "smooth"});
+            }
+        }, 500);
+        window.onscroll = windowScroll;
+    </script>
+
+
+
+
+
+        </div>
+        <div id="css-loading">
+            <h3 class="text-center">加载中...</h3>
+        </div>
+        
+    </body>
+</html>

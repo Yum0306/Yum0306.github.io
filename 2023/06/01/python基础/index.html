@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>Python基础 - 知识，与你分享。</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="python的一些基础语法,好久之前的啦~~~">
+    <meta name="author" content="Yum">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="Python基础"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn{
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 960px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: var(--sec-bkg);
+    display: block;
+    padding: 0.9rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header>
+            
+<div class="header__left">
+	<a href="/" class="button"><span class="logo__text">我的笔记</span></a>
+</div>
+<div class="header__right">
+	<div class="navbar__menus">
+		
+	</div>
+	
+	<a href="/search/" class="button">
+		<div id="btn-search">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32">
+				<path
+					d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z">
+				</path>
+			</svg>
+		</div>
+	</a>
+	
+	<a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
+				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
+		</div>
+	</a>
+	<a href="javaScript:void(0);" class="dropdown-icon button">
+		<div id="btn-dropdown">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32" stroke-linecap="round">
+				<path
+					d="M903.43 561.52H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 204.31H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 918.73H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24z"
+					fill="currentColor"></path>
+			</svg>
+		</div>
+	</a>
+	<div class="dropdown-menus" id="dropdown-menus">
+		
+	</div>
+</div>
+
+        </header>
+        <div id="top"></div>
+        <div id="page-main" class="main-content">
+        <div class="mg-top">
+            
+
+<article class="page">
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>Python基础</h3>
+    
+      <span class="post-meta-label">
+        Yum
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2023-06-01 12:43" pubdate>
+          2023-06-01
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 10.8k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%88%97%E8%A1%A8"><span class="toc-number">1.</span> <span class="toc-text">1.列表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%85%83%E7%A5%96%EF%BC%88%E5%88%97%E8%A1%A8%E7%9A%84%E8%BF%91%E4%BA%B2%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">2.元祖（列表的近亲）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84bif%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">3.字符串的bif：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96%E7%AC%A6%E5%8F%B7%E5%90%AB%E4%B9%89%E5%8F%8A%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6%E5%90%AB"><span class="toc-number">4.</span> <span class="toc-text">4.字符串格式化符号含义及转义字符含</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%8F%E5%88%97"><span class="toc-number">5.</span> <span class="toc-text">序列</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%EF%BC%9A"><span class="toc-number">5.1.</span> <span class="toc-text">迭代器：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%87%BD%E6%95%B0"><span class="toc-number">6.</span> <span class="toc-text">5.函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">7.</span> <span class="toc-text">6.局部变量和全局变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%97%AD%E5%8C%85-closure"><span class="toc-number">8.</span> <span class="toc-text">7.闭包(closure)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">9.</span> <span class="toc-text">8.lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-filter-%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">9.1.</span> <span class="toc-text">1.filter(过滤器)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-map"><span class="toc-number">9.2.</span> <span class="toc-text">2.map</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E9%80%92%E5%BD%92"><span class="toc-number">10.</span> <span class="toc-text">9 递归</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86-%E8%AE%BE%E7%BD%AE%E9%80%92%E5%BD%92%E4%B8%8A%E9%99%90%E5%B1%82%E7%BA%A7"><span class="toc-number">10.1.</span> <span class="toc-text">1.补充知识 设置递归上限层级</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E5%AD%97%E5%85%B8-dict-java%E4%B8%AD%E7%9A%84map%E7%B1%BB%E5%9E%8B"><span class="toc-number">11.</span> <span class="toc-text">10.字典 dict java中的map类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AD%97%E5%85%B8%E7%9A%84%E7%AC%A6%E5%8F%B7%E6%98%AF%E5%A4%A7%E6%8B%AC%E5%8F%B7-%E5%BD%A2%E5%BC%8F%E6%98%AFkey-value-%E7%9B%B8%E9%82%BB%E5%85%83%E7%B4%A0%E4%BB%A5%E9%80%97%E5%8F%B7%E9%9A%94%E5%BC%80"><span class="toc-number">11.1.</span> <span class="toc-text">1.字典的符号是大括号{} 形式是key:value 相邻元素以逗号隔开</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AD%97%E5%85%B8%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87%E6%B7%BB%E5%8A%A0%E9%94%AE%E5%80%BC%E5%AF%B9%E7%9A%84%E5%BD%A2%E5%BC%8F%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0%EF%BC%8C%E8%BF%98%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87key%E6%9D%A5%E6%B7%BB%E5%8A%A0value%E7%9A%84%E5%BD%A2%E5%BC%8F%E6%94%B9%E5%8F%98%E6%88%96%E8%80%85%E6%B7%BB%E5%8A%A0%E5%88%B0%E5%AD%97%E5%85%B8%E4%B8%AD"><span class="toc-number">11.2.</span> <span class="toc-text">2.字典可以通过添加键值对的形式添加元素，还可以通过key来添加value的形式改变或者添加到字典中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-dict-%E4%B8%8D%E6%98%AF%E4%B8%80%E4%B8%AAbif%EF%BC%8C%E6%98%AF%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%8E%82%E5%87%BD%E6%95%B0%EF%BC%88%E8%B0%83%E7%94%A8%E8%AF%A5%E6%96%B9%E6%B3%95%E4%BC%9A%E8%BF%94%E5%9B%9E%E5%AF%B9%E5%BA%94%E5%B7%A5%E5%8E%82%E6%89%80%E4%BA%A7%E7%94%9F%E7%9A%84%E6%98%AF%E5%AE%9E%E4%BE%8B%EF%BC%89"><span class="toc-number">11.3.</span> <span class="toc-text">3.dict()不是一个bif，是一个工厂函数（调用该方法会返回对应工厂所产生的是实例）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%AD%97%E5%85%B8%E6%89%80%E5%AF%B9%E5%BA%94%E7%9A%84bif%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="toc-number">11.4.</span> <span class="toc-text">4.字典所对应的bif函数：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E4%BD%BF%E7%94%A8fromkeys%E5%88%9B%E5%BB%BA%E5%B9%B6%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E5%AD%97%E5%85%B8"><span class="toc-number">11.4.1.</span> <span class="toc-text">4.1.使用fromkeys创建并返回一个新的字典</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-keys-%E6%98%AF%E8%BF%94%E5%9B%9E%E5%AD%97%E5%85%B8%E9%94%AE%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%82"><span class="toc-number">11.4.2.</span> <span class="toc-text">4.2.keys()是返回字典键的引用。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-values-%E6%98%AF%E8%BF%94%E5%9B%9E%E5%AD%97%E5%85%B8%E5%80%BC%E7%9A%84%E5%BC%95%E7%94%A8"><span class="toc-number">11.4.3.</span> <span class="toc-text">4.3.values 是返回字典值的引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-items-%E6%98%AF%E8%BF%94%E5%9B%9E%E5%AD%97%E5%85%B8%E4%B8%AD%E7%9A%84%E6%AF%8F%E4%B8%80%E5%AF%B9key%E5%92%8Cvalue%E7%9A%84%E9%94%AE%E5%80%BC%E5%AF%B9%E3%80%82"><span class="toc-number">11.4.4.</span> <span class="toc-text">4.4 items()是返回字典中的每一对key和value的键值对。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E4%BD%BF%E7%94%A8get-%E6%96%B9%E6%B3%95%E5%8F%AF%E4%BB%A5%E9%81%BF%E5%85%8D%E5%9C%A8%E7%B4%A2%E5%BC%95%E5%80%BC%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8%E7%9A%84%E6%83%85%E5%86%B5%E3%80%82"><span class="toc-number">11.4.5.</span> <span class="toc-text">4.4 使用get()方法可以避免在索引值不存在的情况下抛出异常的情况。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5%E8%BF%98%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87%E6%88%90%E5%91%98%E8%B5%84%E6%A0%BC%E6%93%8D%E4%BD%9C%E7%AC%A6-in%E5%92%8Cnot-in%E5%88%A4%E6%96%AD%E8%BF%99%E4%B8%AAkey%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E4%BA%8E%E5%AD%97%E5%85%B8%E4%B8%AD-key-in-dict-%E6%88%96%E8%80%85key-not-in-dict"><span class="toc-number">11.4.6.</span> <span class="toc-text">4.5还可以通过成员资格操作符 in和not in判断这个key是否存在于字典中 key in dict 或者key not in dict</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-clear-%E6%96%B9%E6%B3%95%E7%94%A8%E4%BA%8E%E6%B8%85%E7%A9%BA%E4%B8%80%E4%B8%AA%E5%AD%97%E5%85%B8"><span class="toc-number">11.4.7.</span> <span class="toc-text">4.6 clear()方法用于清空一个字典</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7%E6%B5%85%E6%8B%B7%E8%B4%9D-copy-%E6%8B%B7%E8%B4%9D%E5%A4%8D%E5%88%B6%E7%BB%99%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E5%AD%97%E5%85%B8-%E6%96%B0%E7%9A%84-%EF%BC%8C%E5%AE%83%E4%BB%AC%E6%89%80%E5%AF%B9%E5%BA%94%E7%9A%84%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E4%B8%8D%E7%9B%B8%E5%90%8C-%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87id-%E6%9D%A5%E6%9F%A5%E7%9C%8B"><span class="toc-number">11.4.8.</span> <span class="toc-text">4.7浅拷贝 copy() 拷贝复制给一个新的字典 新的!!，它们所对应的内存地址不相同 可以通过id()来查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-8-pop-key-%E7%BB%99%E5%AE%9A%E5%AD%97%E5%85%B8%E4%B8%AD%E7%9A%84%E4%B8%80%E4%B8%AAkey%E5%80%BC%EF%BC%8C%E5%BC%B9%E5%87%BA%E8%BF%99%E4%B8%AAkey%E5%AF%B9%E5%BA%94%E7%9A%84value%E5%80%BC-%E8%BF%99%E4%B8%AA%E6%96%B9%E6%B3%95%E6%9C%89%E5%8F%82%E6%95%B0-%E5%B0%B1%E6%98%AFkey"><span class="toc-number">11.4.9.</span> <span class="toc-text">4.8 pop(key) 给定字典中的一个key值，弹出这个key对应的value值 这个方法有参数 就是key</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-9-popitem-%E7%BB%99%E5%AE%9A%E5%AD%97%E5%85%B8%E4%B8%AD%E7%9A%84%E4%B8%80%E4%B8%AAkey%E5%80%BC%EF%BC%8C%E5%BC%B9%E5%87%BA%E5%8C%85%E5%90%AB%E8%BF%99%E4%B8%AAkey%E5%92%8C%E5%AF%B9%E5%BA%94%E7%9A%84value%E7%9A%84%E9%A1%B9%EF%BC%8C%E5%BC%B9%E5%87%BAkey-value-%E8%BF%99%E4%B8%AA%E6%96%B9%E6%B3%95%E6%B2%A1%E6%9C%89%E5%8F%82%E6%95%B0%EF%BC%8C%E5%B8%A6%E5%8F%82%E6%95%B0%E6%8A%A5%E9%94%99"><span class="toc-number">11.4.10.</span> <span class="toc-text">4.9 popitem() 给定字典中的一个key值，弹出包含这个key和对应的value的项，弹出key:value 这个方法没有参数，带参数报错</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-10-setdefault-%E7%BB%99%E5%AD%97%E5%85%B8%E4%B8%AD%E6%B7%BB%E5%8A%A0%E4%B8%80%E9%A1%B9-%E6%9C%89%E4%B8%A4%E4%B8%AA%E5%8F%82%E6%95%B0%EF%BC%8C%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8F%82%E6%95%B0%E5%BF%85%E5%A1%AB-key-%E7%AC%AC%E4%BA%8C%E4%B8%AA%E5%8F%82%E6%95%B0%E9%80%89%E5%A1%ABvalue-%E6%B2%A1%E6%9C%89%E8%AE%BE%E7%BD%AE%E7%AC%AC%E4%BA%8C%E4%B8%AA%E5%8F%82%E6%95%B0%E5%88%99value%E6%98%AFNone-%E5%A6%82%E6%9E%9C%E8%AE%BE%E7%BD%AE%E7%AC%AC%E4%BA%8C%E4%B8%AA%E5%80%BC%E5%88%99value%E6%98%AF%E7%AC%AC%E4%BA%8C%E4%B8%AA%E5%8F%82%E6%95%B0"><span class="toc-number">11.4.11.</span> <span class="toc-text">4.10 setdefault() 给字典中添加一项 有两个参数，第一个参数必填 key 第二个参数选填value 没有设置第二个参数则value是None 如果设置第二个值则value是第二个参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-11-update-%E8%BF%99%E4%B8%AA%E6%96%B9%E6%B3%95%E6%98%AF%E5%88%A9%E7%94%A8%E4%B8%80%E4%B8%AA%E5%AD%97%E5%85%B8%E6%88%96%E8%80%85%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB%E5%8E%BB%E6%9B%B4%E6%96%B0%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%AD%97%E5%85%B8-eg%EF%BC%9Adict-update-3-%E2%80%9D%E4%B8%89%E2%80%9D-%E5%B0%B1%E5%8F%AF%E4%BB%A5%E5%B0%86%E5%8E%9F%E5%85%88-3%E7%9A%84%E6%98%A0%E5%B0%84%E2%80%9Cthree%E2%80%9D%E6%94%B9%E4%B8%BA%E2%80%9C%E4%B8%89%E2%80%9D-%E8%BF%99%E4%B8%AA%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B3%E9%94%AE%E6%98%AF%EF%BC%8C%E4%BB%96%E6%94%AF%E6%8C%81%E5%90%8C%E6%97%B6%E5%AF%B9%E5%A4%9A%E4%B8%AAkeys%E7%9A%84value%E5%80%BC%E8%BF%9B%E8%A1%8C%E6%9B%B4%E6%94%B9"><span class="toc-number">11.4.12.</span> <span class="toc-text">4.11 update() 这个方法是利用一个字典或者映射关系去更新另一个字典 eg：dict.update({3,”三”}) 就可以将原先 3的映射“three”改为“三” 这个方法的关键是，他支持同时对多个keys的value值进行更改</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-%E9%9B%86%E5%90%88-set-%E5%AD%97%E5%85%B8%E7%9A%84%E8%BF%91%E4%BA%B2-%E6%B2%A1%E6%9C%89%E4%BD%93%E7%8E%B0%E5%BD%B1%E5%B0%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%B0%B1%E6%98%AF%E9%9B%86%E5%90%88-%E5%85%B3%E9%94%AE%E5%AD%97-%E5%94%AF%E4%B8%80"><span class="toc-number">12.</span> <span class="toc-text">11 集合 set 字典的近亲 没有体现影射关系的就是集合 关键字 唯一</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%9B%86%E5%90%88%E7%9A%84bif%EF%BC%9A"><span class="toc-number">12.1.</span> <span class="toc-text">1.集合的bif：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-add-%E8%BF%BD%E5%8A%A0%E5%85%83%E7%B4%A0-%E6%9C%89%E4%B8%80%E4%B8%AA%E5%8F%82%E6%95%B0"><span class="toc-number">12.1.1.</span> <span class="toc-text">1.1 add()追加元素 有一个参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-remove-%E4%BB%8E%E9%9B%86%E5%90%88%E4%B8%AD%E7%A7%BB%E9%99%A4-%E6%9C%89%E4%B8%80%E4%B8%AA%E5%8F%82%E6%95%B0"><span class="toc-number">12.1.2.</span> <span class="toc-text">1.2 remove() 从集合中移除 有一个参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-frozenset-%E4%B8%8D%E5%8F%AF%E5%8F%98%E9%9B%86%E5%90%88-%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8add%E5%92%8Cremove-%E4%B8%8D%E8%83%BD%E6%94%B9%E5%8F%98%E5%85%B6%E5%86%85%E9%83%A8%E7%9A%84%E5%80%BC"><span class="toc-number">12.1.3.</span> <span class="toc-text">1.3 frozenset() 不可变集合 不能使用add和remove 不能改变其内部的值</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">13.</span> <span class="toc-text">12.文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E4%BB%B6%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F%E6%98%AFopen-%E5%87%BD%E6%95%B0-%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%E5%AF%B9%E8%B1%A1"><span class="toc-number">13.1.</span> <span class="toc-text">1.文件的打开方式是open() 函数 返回一个文件对象</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-OS%E6%A8%A1%E5%9D%97"><span class="toc-number">14.</span> <span class="toc-text">13.OS模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14-os-path%E6%A8%A1%E5%9D%97%E4%B8%AD%E5%85%B3%E4%BA%8E%E8%B7%AF%E5%BE%84%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%BD%E6%95%B0%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">15.</span> <span class="toc-text">14 os.path模块中关于路径常用的函数使用方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-pickle-%E6%B3%A1%E8%8F%9C-%E6%A8%A1%E5%9D%97-%E7%94%A8%E4%BA%8E%E5%90%A7%E5%88%97%E8%A1%A8-%E5%85%83%E7%A5%96-%E9%9B%86%E5%90%88-%E5%AD%97%E5%85%B8%E7%AD%89%E5%AF%B9%E8%B1%A1%E5%BD%A2%E5%BC%8F%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A3%85%E6%8D%A2%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">16.</span> <span class="toc-text">15.pickle(泡菜) 模块 用于吧列表 元祖 集合 字典等对象形式的数据装换二进制的数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#16-python%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8"><span class="toc-number">17.</span> <span class="toc-text">16 python中的异常</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#16-1-try-except"><span class="toc-number">17.1.</span> <span class="toc-text">16.1.try except</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-2-try-except-finally"><span class="toc-number">17.2.</span> <span class="toc-text">16.2 try except finally</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-3raise-%E6%8A%9B%E5%87%BA%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8-%E7%B1%BB%E4%BC%BC%E4%BA%8Ejava-throw-%E7%9A%84%E4%BD%9C%E7%94%A8-raise-%E5%90%8E%E9%9D%A2%E5%86%99%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8%E7%9A%84%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%BC%82%E5%B8%B8%E7%9A%84%E5%8F%82%E6%95%B0%EF%BC%89-%E5%92%8Cjava%E7%B1%BB%E4%BC%BC"><span class="toc-number">17.3.</span> <span class="toc-text">16.3raise 抛出一个异常 类似于java throw 的作用 raise 后面写一个异常的类型（异常的参数） 和java类似</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#17-%E5%9B%BE%E5%BD%A2%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2-easygui"><span class="toc-number">18.</span> <span class="toc-text">17.图形用户界面 easygui</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#18-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-number">19.</span> <span class="toc-text">18.面向对象</span></a></li></ol>
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p>基础知识点：<br>1.dir(__ builtins __) 查询python的所有内置函数  </p>
+<h1 id="1-列表"><a href="#1-列表" class="headerlink" title="1.列表"></a>1.列表</h1><p>为列表添加元素的三种方法：<br>append()方法只有一个参数，参数内容是一个准备插入列表的元素<br>extends()方法也只有一个参数，参数内容是一个准备合并入列表的一个列表类似于java的addAll();<br>insert()方法有两个参数。第一个参数是准备插入的元素的索引值index，第二个参数是准备插入的元素，索引值从第0个开始<br><strong>元素交换位置</strong>：number[0],number[1]&#x3D;number[1],number[0]<br>从列表删除元素的三种方式：<br>remove()这个方法只有一个参数，参数内容就是list中要移除的元素的名字<br>del 这个是个语句，不是list的方法 eg：del number[1] 这样就把下标为1的元素删除了 del number 直接删除整个list<br>pop()这个是list的方法，可以带参数也可以不带参数，不带参数取出来的元素就是length-1的元素，带参数就是取对应下标的元素出来<br>列表分片：number[start:end] 含头不含尾 只写start就从start到尾，只写end就从头到end位置，如果两个都不写，那么久拷贝原list number2 &#x3D; number[:] 即可拷贝一个新的集合  </p>
+<h1 id="2-元祖（列表的近亲）"><a href="#2-元祖（列表的近亲）" class="headerlink" title="2.元祖（列表的近亲）"></a>2.元祖（列表的近亲）</h1><h1 id="3-字符串的bif："><a href="#3-字符串的bif：" class="headerlink" title="3.字符串的bif："></a>3.字符串的bif：</h1><p>1.capitalize() 把首字母转换为大写  </p>
+<pre><code>str = &quot;xiaoxie&quot;  
+str = str.capitalize()  
+&#39;Xiaoxie&#39;  
+</code></pre>
+<p>2.casefold() 把字符串中的字母全部转换为小写  </p>
+<pre><code>str = &quot;XIAOXIE&quot;  
+str = str.casefold()  
+&#39;xiaoxie&#39;  
+</code></pre>
+<p>3.center(length) 把一个字符串两边填充相同长度至length长度  </p>
+<pre><code>str = &quot;xiaoxie&quot;  
+str = str.center(10)  
+&#39; xiaoxie &#39;  
+</code></pre>
+<p>4.count(sub[,start[,end]]) 返回sub在字符串中出现的次数，start和end参数表示范围，可选  </p>
+<pre><code>str = &quot;xiaoxiaoxiexie&quot;  
+str.count(&quot;xi&quot;,0,15)  
+4  
+</code></pre>
+<p>5.encode(encoding&#x3D;”utf-8”,errors&#x3D;”strict”) 以指定的编码格式对字符串进行编码<br>--encoding – 要使用的编码，如”UTF-8”。<br>--errors – 设置不同错误的处理方案。默认为 ‘strict’,意为编码错误引起一个UnicodeError。 其他可能得值有 ‘ignore’, ‘replace’, ‘xmlcharrefreplace’, ‘backslashreplace’ 以及通过 codecs.register_error() 注册的任何值。  </p>
+<pre><code>str = &quot;中文字符&quot;  
+str = str.encode(encoding=&quot;GBK&quot;,errors=&quot;stript&quot;)  
+b&#39;\xd6\xd0\xce\xc4\xd7\xd6\xb7\xfb&#39;  
+</code></pre>
+<p>6.endswith(sub[,start[,end]])检查字符串是否已sub字符串结束，如果是返回True，否则返回False start和end参数表示范围，可选  </p>
+<pre><code>str = &quot;www.baidu.com&quot;  
+str.endswith(&quot;com&quot;)  
+True  
+</code></pre>
+<p>7.expandtabs([tabsize&#x3D;8]) 把字符串中的tab符号(\t) 转换Wie空格，如果不指定tabsize，则默认的tabsize&#x3D;8  </p>
+<pre><code>str = &quot;I\tLove\tYOU&quot;  
+str = str.expandtabs();  
+&#39;I LOVE YOU&#39;  
+</code></pre>
+<p>8.find(sub[,start[,end]]) 检测sub是否包含在字符串中，如果有则返回索引值，否则返回-1，start和end参数表示范围，可选  </p>
+<pre><code>str = &quot;I LOVE YOU&quot;  
+str.find(&quot;LOVE&quot;,2,16);  
+8  
+</code></pre>
+<p>9.index(sub[,start[,end]]) 跟find方法一样，不过如果sub不在string中会产生一个异常  </p>
+<pre><code>str = str = &quot;I LOVE YOU&quot;  
+str.index(&quot;LOVE&quot;,2,16);  
+以下是异常信息：  
+Traceback (most recent call last):  
+File &quot;&lt;pyshell#84&gt;&quot;, line 1, in &lt;module&gt;  
+str.index(&quot;LOEV&quot;,2,16)  
+ValueError: substring not found  
+</code></pre>
+<p>10.isalnum() 如果字符串至少有一个字符并且所有字符都是字母或者数字则返回True,否则返回False  </p>
+<pre><code>str = &quot;aaaa&quot;  
+str.isalnum()  
+True  
+</code></pre>
+<p>11.isalpha() 如果字符串至少有一个字符并且所有字符都是字母则返回True，否则返回False  </p>
+<pre><code>str = &quot;aaaa1&quot;  
+str.isalpha()  
+False  
+</code></pre>
+<p>12.isdecimal() 如果字符串只包含十进制数字则返回True，否则返回False  </p>
+<pre><code>str = &quot;12&quot;  
+str.isdecimail()  
+True  
+</code></pre>
+<p>13.isdigit() 如果字符串只包含数字则返回True,否则返回False  </p>
+<pre><code>str = &quot;12&quot;  
+str.isdigit()  
+True  
+</code></pre>
+<p>14.islower() 如果字符串重至少包含一个区分大小写的字符，并且这些字符都是小写，则返回True,否则返回False  </p>
+<pre><code>str = &quot;string&quot;  
+str.islower()  
+True  
+</code></pre>
+<p>15.isnumeric() 如果字符串中只包含数字字符，则返回True,否则返回False  </p>
+<pre><code>str = &quot;12&quot;  
+str.isnumeric()  
+True  
+</code></pre>
+<p>16.isspace() 如果字符串中只包含空格则返回True 否则返回False  </p>
+<pre><code>str = &quot; &quot;  
+str.isspace()  
+True  
+</code></pre>
+<p>17.istitle() 如果字符串是标题化，（所有的单词都是以大写开始，几区字母均小写）则返回True，否则返回False  </p>
+<pre><code>str = &quot;String&quot;  
+str.istitle()  
+True  
+</code></pre>
+<p>18.isupper() 如果字符串中至少包含一个区分大小的字符，并且这些字符都是大写，则返回True，否则返回False  </p>
+<pre><code>str = &quot;string&quot;  
+str.isupper()  
+False  
+</code></pre>
+<p><strong>以下是常用的字符串的方法，包含了上面的一些已经举例的内容</strong>  </p>
+<pre><code>1.capitalize() 把字符串的第一个字符改为大写  
+2.casefold() 把整个字符串的所有字符改为小写  
+3.center(width) 将字符串居中，并使用空格填充至长度 width 的新字符串  
+4.count(sub[, start[, end]]) 返回 sub 在字符串里边出现的次数，start 和 end 参数表示范围，可选。  
+5.encode(encoding=&#39;utf-8&#39;, errors=&#39;strict&#39;) 以 encoding 指定的编码格式对字符串进行编码。  
+6.endswith(sub[, start[, end]]) 检查字符串是否以 sub 子字符串结束，如果是返回 True，否则返回 False。start 和 end 参数表示范围，可选。  
+7.expandtabs([tabsize=8]) 把字符串中的 tab 符号（\t）转换为空格，如不指定参数，默认的空格数是 tabsize=8。  
+8.find(sub[, start[, end]]) 检测 sub 是否包含在字符串中，如果有则返回索引值，否则返回 -1，start 和 end 参数表示范围，可选。  
+9.index(sub[, start[, end]]) 跟 find 方法一样，不过如果 sub 不在 string 中会产生一个异常。  
+10.isalnum() 如果字符串至少有一个字符并且所有字符都是字母或数字则返回 True，否则返回 False。  
+11.isalpha() 如果字符串至少有一个字符并且所有字符都是字母则返回 True，否则返回 False。  
+12.isdecimal() 如果字符串只包含十进制数字则返回 True，否则返回 False。  
+13.isdigit() 如果字符串只包含数字则返回 True，否则返回 False。  
+14.islower() 如果字符串中至少包含一个区分大小写的字符，并且这些字符都是小写，则返回 True，否则返回 False。  
+15.isnumeric() 如果字符串中只包含数字字符，则返回 True，否则返回 False。  
+16.isspace() 如果字符串中只包含空格，则返回 True，否则返回 False。  
+17.istitle() 如果字符串是标题化（所有的单词都是以大写开始，其余字母均小写），则返回 True，否则返回 False。  
+18.isupper() 如果字符串中至少包含一个区分大小写的字符，并且这些字符都是大写，则返回 True，否则返回 False。&lt;--------------------------------以上内容都有举例------------------------------&gt;  
+19.join(sub) 以字符串作为分隔符，插入到 sub 中所有的字符之间。  
+20.ljust(width) 返回一个左对齐的字符串，并使用空格填充至长度为 width 的新字符串。  
+21.lower() 转换字符串中所有大写字符为小写。  
+22.lstrip() 去掉字符串左边的所有空格  
+23.partition(sub) 找到子字符串 sub，把字符串分成一个 3 元组 (pre_sub, sub, fol_sub)，如果字符串中不包含 sub 则返回 (&#39;原字符串&#39;, &#39;&#39;, &#39;&#39;)  
+24.replace(old, new[, count]) 把字符串中的 old 子字符串替换成 new 子字符串，如果 count 指定，则替换不超过 count 次。  
+25.rfind(sub[, start[, end]]) 类似于 find() 方法，不过是从右边开始查找。  
+26.rindex(sub[, start[, end]]) 类似于 index() 方法，不过是从右边开始。  
+27.rjust(width) 返回一个右对齐的字符串，并使用空格填充至长度为 width 的新字符串。  
+28.rpartition(sub) 类似于 partition() 方法，不过是从右边开始查找。  
+29.rstrip() 删除字符串末尾的空格。  
+30.split(sep=None, maxsplit=-1) 不带参数默认是以空格为分隔符切片字符串，如果 maxsplit 参数有设置，则仅分隔 maxsplit 个子字符串，返回切片后的子字符串拼接的列表。  
+31.splitlines(([keepends])) 在输出结果里是否去掉换行符，默认为 False，不包含换行符；如果为 True，则保留换行符。。  
+32.startswith(prefix[, start[, end]]) 检查字符串是否以 prefix 开头，是则返回 True，否则返回 False。start 和 end 参数可以指定范围检查，可选。  
+33.strip([chars]) 删除字符串前边和后边所有的空格，chars 参数可以定制删除的字符，可选。  
+34.swapcase() 翻转字符串中的大小写。  
+35.title() 返回标题化（所有的单词都是以大写开始，其余字母均小写）的字符串。  
+36.translate(table) 根据 table 的规则（可以由 str.maketrans(&#39;a&#39;, &#39;b&#39;) 定制）转换字符串中的字符。  
+37.upper() 转换字符串中的所有小写字符为大写。  
+38.zfill(width) 返回长度为 width 的字符串，原字符串右对齐，前边用 0 填充。  
+</code></pre>
+<h1 id="4-字符串格式化符号含义及转义字符含"><a href="#4-字符串格式化符号含义及转义字符含" class="headerlink" title="4.字符串格式化符号含义及转义字符含"></a>4.字符串格式化符号含义及转义字符含</h1><p><strong>字符串格式化符号含义</strong>  </p>
+<table>
+<thead>
+<tr>
+<th><strong>符号</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%c</td>
+<td>格式化字符及其 ASCII 码</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>格式化字符串</td>
+</tr>
+<tr>
+<td>%d</td>
+<td>格式化整数</td>
+</tr>
+<tr>
+<td>%o</td>
+<td>格式化无符号八进制数</td>
+</tr>
+<tr>
+<td>%x</td>
+<td>格式化无符号十六进制数</td>
+</tr>
+<tr>
+<td>%X</td>
+<td>格式化无符号十六进制数（大写）</td>
+</tr>
+<tr>
+<td>%f</td>
+<td>格式化浮点数字，可指定小数点后的精度</td>
+</tr>
+<tr>
+<td>%e</td>
+<td>用科学计数法格式化浮点数</td>
+</tr>
+<tr>
+<td>%E</td>
+<td>作用同 %e，用科学计数法格式化浮点数</td>
+</tr>
+<tr>
+<td>%g</td>
+<td>根据值的大小决定使用 %f 或 %e</td>
+</tr>
+<tr>
+<td>%G</td>
+<td>作用同 %g，根据值的大小决定使用 %f 或者 %E</td>
+</tr>
+<tr>
+<td><strong>格式化操作符辅助命令</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>符号</strong></td>
+<td><strong>说明</strong></td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>m.n</td>
+<td>m 是显示的最小总宽度，n 是小数点后的位数</td>
+</tr>
+<tr>
+<td>-</td>
+<td>用于左对齐</td>
+</tr>
+<tr>
+<td>+</td>
+<td>在正数前面显示加号（+）</td>
+</tr>
+<tr>
+<td>#</td>
+<td>在八进制数前面显示 ‘0o’，在十六进制数前面显示 ‘0x’ 或 ‘0X’</td>
+</tr>
+<tr>
+<td>0</td>
+<td>显示的数字前面填充 ‘0’ 取代空格</td>
+</tr>
+<tr>
+<td><strong>Python 的转义字符及其含义</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>符号</strong></td>
+<td><strong>说明</strong></td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>‘</td>
+<td>单引号</td>
+</tr>
+<tr>
+<td>“</td>
+<td>双引号</td>
+</tr>
+<tr>
+<td>\a</td>
+<td>发出系统响铃声</td>
+</tr>
+<tr>
+<td>\b</td>
+<td>退格符</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>换行符</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>横向制表符（TAB）</td>
+</tr>
+<tr>
+<td>\v</td>
+<td>纵向制表符</td>
+</tr>
+<tr>
+<td>\r</td>
+<td>回车符</td>
+</tr>
+<tr>
+<td>\f</td>
+<td>换页符</td>
+</tr>
+<tr>
+<td>\o</td>
+<td>八进制数代表的字符</td>
+</tr>
+<tr>
+<td>\x</td>
+<td>十六进制数代表的字符</td>
+</tr>
+<tr>
+<td>\0</td>
+<td>表示一个空字符</td>
+</tr>
+<tr>
+<td>\</td>
+<td>反斜杠</td>
+</tr>
+</tbody></table>
+<h1 id="序列"><a href="#序列" class="headerlink" title="序列"></a>序列</h1><p><strong>list</strong>(列表)  </p>
+<pre><code>If no argument is given, the constructor creates a new empty list.  
+| The argument must be an iterable if specified.  
+</code></pre>
+<p>如果没有给出参数，构造函数将创建一个新的空列表。<br>如果指定，参数必须是可迭代的。  </p>
+<h2 id="迭代器："><a href="#迭代器：" class="headerlink" title="迭代器："></a>迭代器：</h2><p><strong>重复反馈过程的活动就是 迭代 其目的通常是为了接近或者达到所需的目标 每次对这个过程的重复称作迭代，而每一次迭代得到的结果都会被作为下一次迭代的初始值</strong><br>tuple(元祖)  </p>
+<pre><code>| If no argument is given, the constructor returns an empty tuple.  
+| If iterable is specified the tuple is initialized from iterable&#39;s items.  
+</code></pre>
+<p>如果没有给出参数，构造函数返回一个空元组。<br>如果指定了iterable，则从iterable的项初始化元组。  </p>
+<pre><code>str() 把数据装换为字符串 和int() 一样的功能  
+len() 得到一个列表（list） 或者 元祖（tuple）的元素个数 长度  
+max() 得到列表或者元祖中的最大值  
+min() 同上得到最小值  
+sum(iterable[,start=0]) 求和一个可迭代的列表或者元祖 start是可选参数 会最终加在求和的值上  
+sorted() 排序一个可迭代的列表或者元祖  
+number = [14,15,52,63,51,85,96,14,98,-48]  
+reversed() 返回列表或者元素的迭代器对象 组合用法 list(reversed(number)) 可以得到list的倒叙结构[-48, 98, 14, 96, 85, 51, 63, 52, 15, 14]  
+enumerate() 生成列表或者元祖的index值和item值组成的元祖 [(index,value),(index,value)]  
+zip() 返回由各个参数序列组成的元祖 zip(a,b) 结果是 [(a[0],b[0]),...(a[len(len(a)&gt;len(b)?b:a)-1],b[len(len(a)&gt;len(b)?b:a)-1])] 这个len取决于a或者b的长度短的那个元祖或列表 如果len(a) &lt; len(b) 那么就是len(a) 反之则是len(b)  
+</code></pre>
+<h1 id="5-函数"><a href="#5-函数" class="headerlink" title="5.函数"></a>5.函数</h1><pre><code>1.定义一个函数的语法格式  
+def 函数名():  
+函数体  
+....  
+eg:  
+def myfunc():  
+print(&quot;I Love Python&quot;)  
+2.调用函数的语法格式  
+函数名()  
+eg:  
+myfunc()  
+3.函数带参数  
+def 函数名(参数变量):  
+eg:  
+myfunc(name):  
+print(&quot;你好！&quot;+name)  
+myfunc(&quot;python&quot;)  
+&#39;你好！python&#39;  
+4.函数的返回值  
+def myfunc(num1,num2):  
+return (num1+num2)  
+eg:  
+print(myfunc(5,6))  
+11  
+5.函数的doc文档  
+函数名.__doc__ 即可查看#注释下的函数逻辑实现的解释  
+6.手机参数==可变参数  
+def myfunc(*params)  
+eg:  
+def myfunc(*params)  
+print(&quot;参数的长度是：&quot;+len(params))  
+print(&quot;第二个参数是：&quot;+param[1])  
+myfunc(1,&quot;老乌龟&quot;,3.14,56,15,25)  
+参数的长度是：6  
+第二个参数是：老乌龟  
+</code></pre>
+<h1 id="6-局部变量和全局变量"><a href="#6-局部变量和全局变量" class="headerlink" title="6.局部变量和全局变量"></a>6.局部变量和全局变量</h1><pre><code>def myfunc(price,rate):  
+final_price = price * rate  
+print(&#39;这里试图打印全局变量old_price的值：&#39;,old_price)  
+old_price = 50  
+price(&quot;修改后的old_price的值是1：&quot;,old_price)  
+return final_price  
+old_price = float(input(&quot;请输入原价:&quot;))  
+rate = float(input(&quot;请输入折扣率:&quot;))  
+new_price = myfunc(old_price,rate)  
+price(&quot;修改后的old的值是2：&quot;,old_price)  
+price(&quot;打折后的价格是：&quot;,new_price)  
+这里的运行结果会出错 UnboundLocalError: local variable &#39;old_price&#39; referenced before assignment 局部变量重复定义  
+</code></pre>
+<p><strong>不要直接在函数中去修改一个全局变量的值，如果修改的话，python会创建一个和全局变量同名的局部变量代替全局变量在函数中使用(shadowing 在函数中屏蔽掉全局变量并声明同名的局部变量) 如果非要在函数中去修改一个全局变量的值 在修改前加上global 告诉python编译器我是修改的全局变量</strong>  </p>
+<h1 id="7-闭包-closure"><a href="#7-闭包-closure" class="headerlink" title="7.闭包(closure)"></a>7.闭包(closure)</h1><p>闭包：如果在一个内部函数里对外部作用于（但不是在全局作用的变量进行引用）那么内部函数就会被认为是闭包（closure）<br>闭包中的外部函数局部变量在闭包函数中的使用  </p>
+<pre><code>方式一：使用容器 list列表来实现闭包函数使用外部函数局部变量  
+def fun1():  
+x = [5]  
+def fun2():  
+x[0] *= x[0]  
+return x[0]  
+reutrn fun2()  
+方式二：使用3.x的关键字 nonlocal variable  
+def fun1():  
+x = 5  
+def fun2():  
+nonlocal x  
+x *= x  
+return x  
+return fun2()  
+</code></pre>
+<h1 id="8-lambda表达式"><a href="#8-lambda表达式" class="headerlink" title="8.lambda表达式"></a>8.lambda表达式</h1><pre><code>使用lambda定义匿名的函数  
+语法：lambda argument:return value  
+关键字 参数：返回值  
+冒号前面你的你需要传的形参名称 冒号后面为你的函数执行返回值  
+</code></pre>
+<p>补充两个结合lambda实现的便捷BIF  </p>
+<h2 id="1-filter-过滤器"><a href="#1-filter-过滤器" class="headerlink" title="1.filter(过滤器)"></a>1.filter(过滤器)</h2><pre><code>| Return an iterator yielding those items of iterable for which function(item)  
+| is true. If function is None, return the items that are true.  
+返回一个迭代器，该迭代器生成用于哪个函数(项)的可迭代项  
+|是正确的。如果函数为None，则返回为true的项。  
+</code></pre>
+<p>filter(function or None, iterable) –&gt; filter object<br>这个BIF有两个参数 如果第一个参数是一个function函数的话，就会把后面迭代器里面的值以参数的形式传递给前面的function 然后filter就会过滤掉function返回false的结果，得到返回true的结果，并返回一个list，如果第一个参数不是一个function的话，就会直接把第二个列表参数里面的返回true的结果返回。过滤掉false 并返回结果list<br>eg：  </p>
+<pre><code>需求：过滤掉100以内的所有的偶数，得到所有的基数  
+方式1：  
+def iseven(i):  
+return i%2  
+list = range(0,100)  
+list(filter(iseven,list))  
+[1,3,5,...99]  
+​  
+方式二：  
+list(filter(lambda i:i%2,range(0,100)))  
+[1,3,5,...99]  
+</code></pre>
+<h2 id="2-map"><a href="#2-map" class="headerlink" title="2.map"></a>2.map</h2><pre><code>| Make an iterator that computes the function using arguments from  
+| each of the iterables. Stops when the shortest iterable is exhausted.  
+创建一个迭代器，它使用来自的参数计算函数  
+每个迭代器。当最短的迭代器耗尽时停止。  
+</code></pre>
+<p>map(func, *iterables) –&gt; map object<br>map有两个参数第一个参数是一个函数，第二个参数是一个可迭代的序列 这个bif的功能是将序列的每个元素作为function的参数传递到function中 然后在function内容将每一个元素进行运算加工，直到序列可迭代元素都加工完毕，返回所有加工后的元素构成的新序列（新list）<br>eg:  </p>
+<pre><code>需求：将一些价格批量打0.8折，并返回打折之后的价格  
+直接使用lambda实现  
+list(map(lambda price:price * 0.8,[300,250,100,200,360]))  
+[240.0, 200.0, 80.0, 160.0, 288.0]  
+</code></pre>
+<h1 id="9-递归"><a href="#9-递归" class="headerlink" title="9 递归"></a>9 递归</h1><h2 id="1-补充知识-设置递归上限层级"><a href="#1-补充知识-设置递归上限层级" class="headerlink" title="1.补充知识 设置递归上限层级"></a>1.补充知识 设置递归上限层级</h2><pre><code>import sys  
+sys.setrecursionlimit(你需要设置的层数)  
+</code></pre>
+<pre><code>需求：递归求阶乘  
+def factorial(n):  
+if n == 1:  
+return 1  
+else:  
+return n * factorial(n-1)  
+number = int(input(&quot;请输入一个正整数:&quot;))  
+result = factorial(number)  
+print(&quot;%d 的阶乘是：%d&quot; % (number,result))  
+</code></pre>
+<pre><code>需求 求兔子的数量(斐波拉切数)  
+实现方法1 递归  
+def rabbit(n):  
+if n == 1 or n == 2:  
+print(&quot;兔子的数量是：1&quot;)  
+return 1  
+elif n &gt; 2:  
+number = rabbit(n - 1) + rabbit(n - 2)  
+print(&quot;兔子的数量是：%d&quot; % number)  
+return number  
+month = int(input(&quot;请输入月数：&quot;))  
+number = rabbit(month)  
+print(&quot;%d 个月之后兔子的数量是：%d&quot; % (month,number))  
+实现方式2 迭代  
+def rabbit(n):  
+n1=n2=n3 = 1  
+while((n - 2) &gt; 0):  
+n3= n1 + n2  
+n1,n2 = n2,n3  
+n -=1  
+return n3;  
+month = int(input(&quot;请输入月数：&quot;))  
+number = rabbit(month)  
+print(&quot;%d 个月之后兔子的数量是：%d&quot; % (month,number))  
+</code></pre>
+<h1 id="10-字典-dict-java中的map类型"><a href="#10-字典-dict-java中的map类型" class="headerlink" title="10.字典 dict java中的map类型"></a>10.字典 dict java中的map类型</h1><h2 id="1-字典的符号是大括号-形式是key-value-相邻元素以逗号隔开"><a href="#1-字典的符号是大括号-形式是key-value-相邻元素以逗号隔开" class="headerlink" title="1.字典的符号是大括号{} 形式是key:value 相邻元素以逗号隔开"></a>1.字典的符号是大括号{} 形式是key:value 相邻元素以逗号隔开</h2><p>eg:dict &#x3D; {“one”:1,”two”:2,”three”:3}，  </p>
+<h2 id="2-字典可以通过添加键值对的形式添加元素，还可以通过key来添加value的形式改变或者添加到字典中"><a href="#2-字典可以通过添加键值对的形式添加元素，还可以通过key来添加value的形式改变或者添加到字典中" class="headerlink" title="2.字典可以通过添加键值对的形式添加元素，还可以通过key来添加value的形式改变或者添加到字典中"></a>2.字典可以通过添加键值对的形式添加元素，还可以通过key来添加value的形式改变或者添加到字典中</h2><p>eg dict[‘four’] &#x3D; 4 这个例子中，如果存在four这个key值的话就会修改掉原来key值对应的value值，如果key值不存在的话就会直接将这对key和value添加到字典中  </p>
+<h2 id="3-dict-不是一个bif，是一个工厂函数（调用该方法会返回对应工厂所产生的是实例）"><a href="#3-dict-不是一个bif，是一个工厂函数（调用该方法会返回对应工厂所产生的是实例）" class="headerlink" title="3.dict()不是一个bif，是一个工厂函数（调用该方法会返回对应工厂所产生的是实例）"></a>3.dict()不是一个bif，是一个工厂函数（调用该方法会返回对应工厂所产生的是实例）</h2><h2 id="4-字典所对应的bif函数："><a href="#4-字典所对应的bif函数：" class="headerlink" title="4.字典所对应的bif函数："></a>4.字典所对应的bif函数：</h2><h3 id="4-1-使用fromkeys创建并返回一个新的字典"><a href="#4-1-使用fromkeys创建并返回一个新的字典" class="headerlink" title="4.1.使用fromkeys创建并返回一个新的字典"></a>4.1.使用fromkeys创建并返回一个新的字典</h3><p>dict.fromkeys(key[,value]) 这个方法有两个参数，第一个参数是key值，第二个是key对应的的value value是可选的  </p>
+<h3 id="4-2-keys-是返回字典键的引用。"><a href="#4-2-keys-是返回字典键的引用。" class="headerlink" title="4.2.keys()是返回字典键的引用。"></a>4.2.keys()是返回字典键的引用。</h3><p>就是返回字典中所有的key值 例如在集合中for循环中遍历是 for i in dict.keys()  </p>
+<h3 id="4-3-values-是返回字典值的引用"><a href="#4-3-values-是返回字典值的引用" class="headerlink" title="4.3.values 是返回字典值的引用"></a>4.3.values 是返回字典值的引用</h3><p>返回字典中所有的value值，使用for循环遍历也是同样的效果 for val in dict.values()  </p>
+<h3 id="4-4-items-是返回字典中的每一对key和value的键值对。"><a href="#4-4-items-是返回字典中的每一对key和value的键值对。" class="headerlink" title="4.4 items()是返回字典中的每一对key和value的键值对。"></a>4.4 items()是返回字典中的每一对key和value的键值对。</h3><p>相当于java map中的entry对象，返回每一组key:value  </p>
+<h3 id="4-4-使用get-方法可以避免在索引值不存在的情况下抛出异常的情况。"><a href="#4-4-使用get-方法可以避免在索引值不存在的情况下抛出异常的情况。" class="headerlink" title="4.4 使用get()方法可以避免在索引值不存在的情况下抛出异常的情况。"></a>4.4 使用get()方法可以避免在索引值不存在的情况下抛出异常的情况。</h3><p>如果直接使用dict[len(dict)+1] 则会直接出现错误 KeyError: index ，如果是用get()方法则不会抛出异常，则会返回一个None eg:print(dict.get(len(dict)+1)) 这样的方法获取None<br>这个方法支持第一个参数是字典中的索引值index，第二个值为如果找不到的情况下返回的值，如果找到则不会返回第二个参数值 eg：print(dict.get(len(dict)+1)，“不存在”) 返回的值是：不存在  </p>
+<h3 id="4-5还可以通过成员资格操作符-in和not-in判断这个key是否存在于字典中-key-in-dict-或者key-not-in-dict"><a href="#4-5还可以通过成员资格操作符-in和not-in判断这个key是否存在于字典中-key-in-dict-或者key-not-in-dict" class="headerlink" title="4.5还可以通过成员资格操作符 in和not in判断这个key是否存在于字典中 key in dict 或者key not in dict"></a>4.5还可以通过成员资格操作符 in和not in判断这个key是否存在于字典中 key in dict 或者key not in dict</h3><p>存在返回True 不存在返回False 检查成员操作资格比序列更加高效，当字典中的数据相当大事，使用成员资格操作符的效率会更加高效  </p>
+<h3 id="4-6-clear-方法用于清空一个字典"><a href="#4-6-clear-方法用于清空一个字典" class="headerlink" title="4.6 clear()方法用于清空一个字典"></a>4.6 clear()方法用于清空一个字典</h3><p>eg:dict.clear() 则会把dict这个字典清空  </p>
+<h3 id="4-7浅拷贝-copy-拷贝复制给一个新的字典-新的-，它们所对应的内存地址不相同-可以通过id-来查看"><a href="#4-7浅拷贝-copy-拷贝复制给一个新的字典-新的-，它们所对应的内存地址不相同-可以通过id-来查看" class="headerlink" title="4.7浅拷贝 copy() 拷贝复制给一个新的字典 新的!!，它们所对应的内存地址不相同 可以通过id()来查看"></a>4.7浅拷贝 copy() 拷贝复制给一个新的字典 新的!!，它们所对应的内存地址不相同 可以通过id()来查看</h3><p>补充知识:id()函数用于获取对象的内存地址  </p>
+<h3 id="4-8-pop-key-给定字典中的一个key值，弹出这个key对应的value值-这个方法有参数-就是key"><a href="#4-8-pop-key-给定字典中的一个key值，弹出这个key对应的value值-这个方法有参数-就是key" class="headerlink" title="4.8 pop(key) 给定字典中的一个key值，弹出这个key对应的value值 这个方法有参数 就是key"></a>4.8 pop(key) 给定字典中的一个key值，弹出这个key对应的value值 这个方法有参数 就是key</h3><h3 id="4-9-popitem-给定字典中的一个key值，弹出包含这个key和对应的value的项，弹出key-value-这个方法没有参数，带参数报错"><a href="#4-9-popitem-给定字典中的一个key值，弹出包含这个key和对应的value的项，弹出key-value-这个方法没有参数，带参数报错" class="headerlink" title="4.9 popitem() 给定字典中的一个key值，弹出包含这个key和对应的value的项，弹出key:value 这个方法没有参数，带参数报错"></a>4.9 popitem() 给定字典中的一个key值，弹出包含这个key和对应的value的项，弹出key:value 这个方法没有参数，带参数报错</h3><h3 id="4-10-setdefault-给字典中添加一项-有两个参数，第一个参数必填-key-第二个参数选填value-没有设置第二个参数则value是None-如果设置第二个值则value是第二个参数"><a href="#4-10-setdefault-给字典中添加一项-有两个参数，第一个参数必填-key-第二个参数选填value-没有设置第二个参数则value是None-如果设置第二个值则value是第二个参数" class="headerlink" title="4.10 setdefault() 给字典中添加一项 有两个参数，第一个参数必填 key 第二个参数选填value 没有设置第二个参数则value是None 如果设置第二个值则value是第二个参数"></a>4.10 setdefault() 给字典中添加一项 有两个参数，第一个参数必填 key 第二个参数选填value 没有设置第二个参数则value是None 如果设置第二个值则value是第二个参数</h3><h3 id="4-11-update-这个方法是利用一个字典或者映射关系去更新另一个字典-eg：dict-update-3-”三”-就可以将原先-3的映射“three”改为“三”-这个方法的关键是，他支持同时对多个keys的value值进行更改"><a href="#4-11-update-这个方法是利用一个字典或者映射关系去更新另一个字典-eg：dict-update-3-”三”-就可以将原先-3的映射“three”改为“三”-这个方法的关键是，他支持同时对多个keys的value值进行更改" class="headerlink" title="4.11 update() 这个方法是利用一个字典或者映射关系去更新另一个字典 eg：dict.update({3,”三”}) 就可以将原先 3的映射“three”改为“三” 这个方法的关键是，他支持同时对多个keys的value值进行更改"></a>4.11 update() 这个方法是利用一个字典或者映射关系去更新另一个字典 eg：dict.update({3,”三”}) 就可以将原先 3的映射“three”改为“三” 这个方法的关键是，他支持同时对多个keys的value值进行更改</h3><h1 id="11-集合-set-字典的近亲-没有体现影射关系的就是集合-关键字-唯一"><a href="#11-集合-set-字典的近亲-没有体现影射关系的就是集合-关键字-唯一" class="headerlink" title="11 集合 set 字典的近亲 没有体现影射关系的就是集合 关键字 唯一"></a>11 集合 set 字典的近亲 没有体现影射关系的就是集合 关键字 唯一</h1><p>无序，key唯一， 使用num1 &#x3D; list(set(num1)) 可以去去除num1中的重复的内容<br>集合同样适用成员资格操作符来判断成员是否在这个集合中  </p>
+<h2 id="1-集合的bif："><a href="#1-集合的bif：" class="headerlink" title="1.集合的bif："></a>1.集合的bif：</h2><h3 id="1-1-add-追加元素-有一个参数"><a href="#1-1-add-追加元素-有一个参数" class="headerlink" title="1.1 add()追加元素 有一个参数"></a>1.1 add()追加元素 有一个参数</h3><h3 id="1-2-remove-从集合中移除-有一个参数"><a href="#1-2-remove-从集合中移除-有一个参数" class="headerlink" title="1.2 remove() 从集合中移除 有一个参数"></a>1.2 remove() 从集合中移除 有一个参数</h3><h3 id="1-3-frozenset-不可变集合-不能使用add和remove-不能改变其内部的值"><a href="#1-3-frozenset-不可变集合-不能使用add和remove-不能改变其内部的值" class="headerlink" title="1.3 frozenset() 不可变集合 不能使用add和remove 不能改变其内部的值"></a>1.3 frozenset() 不可变集合 不能使用add和remove 不能改变其内部的值</h3><h1 id="12-文件操作"><a href="#12-文件操作" class="headerlink" title="12.文件操作"></a>12.文件操作</h1><h2 id="1-文件的打开方式是open-函数-返回一个文件对象"><a href="#1-文件的打开方式是open-函数-返回一个文件对象" class="headerlink" title="1.文件的打开方式是open() 函数 返回一个文件对象"></a>1.文件的打开方式是open() 函数 返回一个文件对象</h2><p>open(file, mode&#x3D;’r’, buffering&#x3D;-1, encoding&#x3D;None, errors&#x3D;None, newline&#x3D;None, closefd&#x3D;True, opener&#x3D;None) 除了第一个是必填以外，其他的都是有默认值的<br>参数列表:<br>file 打开的文件 如果带路径就是打开对应路径下的文件，如果不带路径就是打来当前路径下的同名文件<br>mode 打开文件的模式  </p>
+<table>
+<thead>
+<tr>
+<th>“r”</th>
+<th>以只读方式打开文件(默认)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“w”</td>
+<td>以写入的方式打开文件，会覆盖已存在的文件</td>
+</tr>
+<tr>
+<td>“x”</td>
+<td>如果文件已经存在，使用此模式打开将引发异常</td>
+</tr>
+<tr>
+<td>“a”</td>
+<td>以写入模式打开，如果文件存在，则在末尾追加写入</td>
+</tr>
+<tr>
+<td>“b”</td>
+<td>以二进制模式打开文件</td>
+</tr>
+<tr>
+<td>“t”</td>
+<td>以文本模式打开文件(默认)</td>
+</tr>
+<tr>
+<td>“+”</td>
+<td>可读写模式(可添加到其他模式中使用)</td>
+</tr>
+<tr>
+<td>“U”</td>
+<td>通用换行符支持</td>
+</tr>
+<tr>
+<td><strong>文件对象方法</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>文件对象方法</strong></td>
+<td><strong>执行操作</strong></td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>f.close()</td>
+<td>关闭文件</td>
+</tr>
+<tr>
+<td>f.read([size&#x3D;-1])</td>
+<td>从文件读取size个字符，当未给定size或给定负值的时候，读取剩余的所有字符，然后作为字符串返回</td>
+</tr>
+<tr>
+<td>f.readline([size&#x3D;-1])</td>
+<td>从文件中读取并返回一行（包括行结束符），如果有size有定义则返回size个字符</td>
+</tr>
+<tr>
+<td>f.write(str)</td>
+<td>将字符串str写入文件</td>
+</tr>
+<tr>
+<td>f.writelines(seq)</td>
+<td>向文件写入字符串序列seq，seq应该是一个返回字符串的可迭代对象</td>
+</tr>
+<tr>
+<td>f.seek(offset, from)</td>
+<td>在文件中移动文件指针，从from（0代表文件起始位置，1代表当前位置，2代表文件末尾）偏移offset个字节</td>
+</tr>
+<tr>
+<td>f.tell()</td>
+<td>返回当前在文件中的位置</td>
+</tr>
+<tr>
+<td>f.truncate([size&#x3D;file.tell()])</td>
+<td>截取文件到size个字节，默认是截取到文件指针当前位置</td>
+</tr>
+</tbody></table>
+<h1 id="13-OS模块"><a href="#13-OS模块" class="headerlink" title="13.OS模块"></a>13.OS模块</h1><p><strong>os模块中关于文件&#x2F;目录常用的函数使用方法</strong>  </p>
+<table>
+<thead>
+<tr>
+<th><strong>函数名</strong></th>
+<th><strong>使用方法</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getcwd()</td>
+<td>返回当前工作目录</td>
+</tr>
+<tr>
+<td>chdir(path)</td>
+<td>改变工作目录</td>
+</tr>
+<tr>
+<td>listdir(path&#x3D;’.’)</td>
+<td>列举指定目录中的文件名（’.’表示当前目录，’..’表示上一级目录）</td>
+</tr>
+<tr>
+<td>mkdir(path)</td>
+<td>创建单层目录，如该目录已存在抛出异常</td>
+</tr>
+<tr>
+<td>makedirs(path)</td>
+<td>递归创建多层目录，如该目录已存在抛出异常，注意：’E:\a\b’和’E:\a\c’并不会冲突</td>
+</tr>
+<tr>
+<td>remove(path)</td>
+<td>删除文件</td>
+</tr>
+<tr>
+<td>rmdir(path)</td>
+<td>删除单层目录，如该目录非空则抛出异常</td>
+</tr>
+<tr>
+<td>removedirs(path)</td>
+<td>递归删除目录，从子目录到父目录逐层尝试删除，遇到目录非空则抛出异常</td>
+</tr>
+<tr>
+<td>rename(old, new)</td>
+<td>将文件old重命名为new</td>
+</tr>
+<tr>
+<td>system(command)</td>
+<td>运行系统的shell命令</td>
+</tr>
+<tr>
+<td>walk(top)</td>
+<td>遍历top路径以下所有的子目录，返回一个三元组：(路径, [包含目录], [包含文件])【具体实现方案请看：第30讲课后作业^_^】</td>
+</tr>
+<tr>
+<td><em>以下是支持路径操作中常用到的一些定义，支持所有平台</em></td>
+<td></td>
+</tr>
+<tr>
+<td>os.curdir</td>
+<td>指代当前目录（’.’）</td>
+</tr>
+<tr>
+<td>os.pardir</td>
+<td>指代上一级目录（’..’）</td>
+</tr>
+<tr>
+<td>os.sep</td>
+<td>输出操作系统特定的路径分隔符（Win下为’\‘，Linux下为’&#x2F;‘）</td>
+</tr>
+<tr>
+<td>os.linesep</td>
+<td>当前平台使用的行终止符（Win下为’\r\n’，Linux下为’\n’）</td>
+</tr>
+<tr>
+<td>os.name</td>
+<td>指代当前使用的操作系统（包括：’posix’, ‘nt’, ‘mac’, ‘os2’, ‘ce’, ‘java’）</td>
+</tr>
+</tbody></table>
+<h1 id="14-os-path模块中关于路径常用的函数使用方法"><a href="#14-os-path模块中关于路径常用的函数使用方法" class="headerlink" title="14 os.path模块中关于路径常用的函数使用方法"></a>14 os.path模块中关于路径常用的函数使用方法</h1><table>
+<thead>
+<tr>
+<th><strong>函数名</strong></th>
+<th><strong>使用方法</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>basename(path)</td>
+<td>去掉目录路径，单独返回文件名</td>
+</tr>
+<tr>
+<td>dirname(path)</td>
+<td>去掉文件名，单独返回目录路径</td>
+</tr>
+<tr>
+<td>join(path1[, path2[, …]])</td>
+<td>将path1, path2各部分组合成一个路径名</td>
+</tr>
+<tr>
+<td>split(path)</td>
+<td>分割文件名与路径，返回(f_path, f_name)元组。如果完全使用目录，它也会将最后一个目录作为文件名分离，且不会判断文件或者目录是否存在</td>
+</tr>
+<tr>
+<td>splitext(path)</td>
+<td>分离文件名与扩展名，返回(f_name, f_extension)元组</td>
+</tr>
+<tr>
+<td>getsize(file)</td>
+<td>返回指定文件的尺寸，单位是字节</td>
+</tr>
+<tr>
+<td>getatime(file)</td>
+<td>返回指定文件最近的访问时间（浮点型秒数，可用time模块的gmtime()或localtime()函数换算）</td>
+</tr>
+<tr>
+<td>getctime(file)</td>
+<td>返回指定文件的创建时间（浮点型秒数，可用time模块的gmtime()或localtime()函数换算）</td>
+</tr>
+<tr>
+<td>getmtime(file)</td>
+<td>返回指定文件最新的修改时间（浮点型秒数，可用time模块的gmtime()或localtime()函数换算）</td>
+</tr>
+<tr>
+<td><em>以下为函数返回 True 或 False</em></td>
+<td></td>
+</tr>
+<tr>
+<td>exists(path)</td>
+<td>判断指定路径（目录或文件）是否存在</td>
+</tr>
+<tr>
+<td>isabs(path)</td>
+<td>判断指定路径是否为绝对路径</td>
+</tr>
+<tr>
+<td>isdir(path)</td>
+<td>判断指定路径是否存在且是一个目录</td>
+</tr>
+<tr>
+<td>isfile(path)</td>
+<td>判断指定路径是否存在且是一个文件</td>
+</tr>
+<tr>
+<td>islink(path)</td>
+<td>判断指定路径是否存在且是一个符号链接</td>
+</tr>
+<tr>
+<td>ismount(path)</td>
+<td>判断指定路径是否存在且是一个挂载点</td>
+</tr>
+<tr>
+<td>samefile(path1, paht2)</td>
+<td>判断path1和path2两个路径是否指向同一个文件</td>
+</tr>
+</tbody></table>
+<h1 id="15-pickle-泡菜-模块-用于吧列表-元祖-集合-字典等对象形式的数据装换二进制的数据"><a href="#15-pickle-泡菜-模块-用于吧列表-元祖-集合-字典等对象形式的数据装换二进制的数据" class="headerlink" title="15.pickle(泡菜) 模块 用于吧列表 元祖 集合 字典等对象形式的数据装换二进制的数据"></a>15.pickle(泡菜) 模块 用于吧列表 元祖 集合 字典等对象形式的数据装换二进制的数据</h1><p>eg:  </p>
+<pre><code>import pickle  
+my_list = [123,3.14,&quot;小甲鱼&quot;,[&quot;another list&quot;]]  
+pickle_file = open(&quot;my_list.pkl&quot;,&quot;wb&quot;) #这里的保存文件后缀名自定义就好，然后文件的操作模式必须是“wb” 不然会报错 w:以写入的方式打开文件，会覆盖已存在的文件 b:以二进制模式打开文件  
+pickle.dump(my_list,pickle_file)  
+pickle_file.close()  
+#上面的是写入操作，下面的是读取操作  
+pickle_file = open(&quot;my_list.pkl&quot;,&quot;rb&quot;) #这里的文件操作模式是rb r:以只读方式打开文件(默认) b:以二进制模式打开文件  
+my_list2 = pickle.load(pickle_file)  
+print(my_list2)  
+[123,3.14,&quot;小甲鱼&quot;,[&quot;another list&quot;]]  
+</code></pre>
+<h1 id="16-python中的异常"><a href="#16-python中的异常" class="headerlink" title="16 python中的异常"></a>16 python中的异常</h1><table>
+<thead>
+<tr>
+<th>AssertionError</th>
+<th>断言语句（assert）失败</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AttributeError</td>
+<td>尝试访问未知的对象属性</td>
+</tr>
+<tr>
+<td>EOFError</td>
+<td>用户输入文件末尾标志EOF（Ctrl+d）</td>
+</tr>
+<tr>
+<td>FloatingPointError</td>
+<td>浮点计算错误</td>
+</tr>
+<tr>
+<td>GeneratorExit</td>
+<td>generator.close()方法被调用的时候</td>
+</tr>
+<tr>
+<td>ImportError</td>
+<td>导入模块失败的时候</td>
+</tr>
+<tr>
+<td>IndexError</td>
+<td>索引超出序列的范围</td>
+</tr>
+<tr>
+<td>KeyError</td>
+<td>字典中查找一个不存在的关键字</td>
+</tr>
+<tr>
+<td>KeyboardInterrupt</td>
+<td>用户输入中断键（Ctrl+c）</td>
+</tr>
+<tr>
+<td>MemoryError</td>
+<td>内存溢出（可通过删除对象释放内存）</td>
+</tr>
+<tr>
+<td>NameError</td>
+<td>尝试访问一个不存在的变量</td>
+</tr>
+<tr>
+<td>NotImplementedError</td>
+<td>尚未实现的方法</td>
+</tr>
+<tr>
+<td>OSError</td>
+<td>操作系统产生的异常（例如打开一个不存在的文件）</td>
+</tr>
+<tr>
+<td>OverflowError</td>
+<td>数值运算超出最大限制</td>
+</tr>
+<tr>
+<td>ReferenceError</td>
+<td>弱引用（weak reference）试图访问一个已经被垃圾回收机制回收了的对象</td>
+</tr>
+<tr>
+<td>RuntimeError</td>
+<td>一般的运行时错误</td>
+</tr>
+<tr>
+<td>StopIteration</td>
+<td>迭代器没有更多的值</td>
+</tr>
+<tr>
+<td>SyntaxError</td>
+<td>Python的语法错误</td>
+</tr>
+<tr>
+<td>IndentationError</td>
+<td>缩进错误</td>
+</tr>
+<tr>
+<td>TabError</td>
+<td>Tab和空格混合使用</td>
+</tr>
+<tr>
+<td>SystemError</td>
+<td>Python编译器系统错误</td>
+</tr>
+<tr>
+<td>SystemExit</td>
+<td>Python编译器进程被关闭</td>
+</tr>
+<tr>
+<td>TypeError</td>
+<td>不同类型间的无效操作</td>
+</tr>
+<tr>
+<td>UnboundLocalError</td>
+<td>访问一个未初始化的本地变量（NameError的子类）</td>
+</tr>
+<tr>
+<td>UnicodeError</td>
+<td>Unicode相关的错误（ValueError的子类）</td>
+</tr>
+<tr>
+<td>UnicodeEncodeError</td>
+<td>Unicode编码时的错误（UnicodeError的子类）</td>
+</tr>
+<tr>
+<td>UnicodeDecodeError</td>
+<td>Unicode解码时的错误（UnicodeError的子类）</td>
+</tr>
+<tr>
+<td>UnicodeTranslateError</td>
+<td>Unicode转换时的错误（UnicodeError的子类）</td>
+</tr>
+<tr>
+<td>ValueError</td>
+<td>传入无效的参数</td>
+</tr>
+<tr>
+<td>ZeroDivisionError</td>
+<td>除数为零</td>
+</tr>
+<tr>
+<td>以下是 Python 内置异常类的层次结构：</td>
+<td></td>
+</tr>
+<tr>
+<td>BaseException</td>
+<td></td>
+</tr>
+<tr>
+<td>+– SystemExit</td>
+<td></td>
+</tr>
+<tr>
+<td>+– KeyboardInterrupt</td>
+<td></td>
+</tr>
+<tr>
+<td>+– GeneratorExit</td>
+<td></td>
+</tr>
+<tr>
+<td>+– Exception</td>
+<td></td>
+</tr>
+<tr>
+<td>+– StopIteration</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ArithmeticError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– FloatingPointError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– OverflowError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ZeroDivisionError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– AssertionError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– AttributeError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– BufferError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– EOFError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ImportError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– LookupError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– IndexError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– KeyError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– MemoryError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– NameError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– UnboundLocalError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– OSError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– BlockingIOError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ChildProcessError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ConnectionError</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>+– BrokenPipeError</td>
+</tr>
+<tr>
+<td></td>
+<td>+– ConnectionAbortedError</td>
+</tr>
+<tr>
+<td></td>
+<td>+– ConnectionRefusedError</td>
+</tr>
+<tr>
+<td></td>
+<td>+– ConnectionResetError</td>
+</tr>
+<tr>
+<td>+– FileExistsError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– FileNotFoundError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– InterruptedError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– IsADirectoryError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– NotADirectoryError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– PermissionError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ProcessLookupError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– TimeoutError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ReferenceError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– RuntimeError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– NotImplementedError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– SyntaxError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– IndentationError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– TabError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– SystemError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– TypeError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ValueError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– UnicodeError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– UnicodeDecodeError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– UnicodeEncodeError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– UnicodeTranslateError</td>
+<td></td>
+</tr>
+<tr>
+<td>+– Warning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– DeprecationWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– PendingDeprecationWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– RuntimeWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– SyntaxWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– UserWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– FutureWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ImportWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– UnicodeWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– BytesWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>+– ResourceWarning</td>
+<td></td>
+</tr>
+<tr>
+<td>异常的捕获：</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="16-1-try-except"><a href="#16-1-try-except" class="headerlink" title="16.1.try except"></a>16.1.try except</h2><p>eg:  </p>
+<pre><code>try:  
+f = open(&quot;不存在的文件.txt&quot;)  
+print(f.read())  
+f.close  
+except OSError as reason:  
+print(&quot;文件出错啦T_T,错误的原因是：&quot;+str(reason))  
+文件出错啦T_T,错误的原因是：[Errno 2] No such file or directory: &#39;不存在的文件.txt&#39;  
+</code></pre>
+<p>和java一样 except是可以多层嵌套的，不同类型的异常使用不用的处理方式<br>except 后面不跟异常的类型表示在前面的except 所对应的异常类型没有符合的，就进入都最后的except（后面不带异常类型）中  </p>
+<h2 id="16-2-try-except-finally"><a href="#16-2-try-except-finally" class="headerlink" title="16.2 try except finally"></a>16.2 try except finally</h2><p>这个的用法和java很相似 不做过多注释  </p>
+<h2 id="16-3raise-抛出一个异常-类似于java-throw-的作用-raise-后面写一个异常的类型（异常的参数）-和java类似"><a href="#16-3raise-抛出一个异常-类似于java-throw-的作用-raise-后面写一个异常的类型（异常的参数）-和java类似" class="headerlink" title="16.3raise 抛出一个异常 类似于java throw 的作用 raise 后面写一个异常的类型（异常的参数） 和java类似"></a>16.3raise 抛出一个异常 类似于java throw 的作用 raise 后面写一个异常的类型（异常的参数） 和java类似</h2><p>17 丰富的else语句和简洁的with语句<br>1.else和if语句搭配可以实现 <strong>“要么怎样，要么不怎样”</strong> 的逻辑处理<br>2.else和循环语句for或者while搭配实现 <strong>“干完了能怎样，干不完就别想怎样”</strong> 的逻辑处理<br>3.else和try except异常处理搭配实现<strong>“没有问题的话怎样”</strong> 的逻辑处理<br>第一种举例：  </p>
+<pre><code>if i%2 ==0:  
+......要么怎样的处理逻辑  
+else:  
+......要么不怎样的处理逻辑  
+</code></pre>
+<p>第二种举例  </p>
+<pre><code>def showMaxFactor(num)  
+count = num // 2  
+while count &gt; 1:  
+if num % count ==0  
+print(&quot;%d最大的约数是%d&quot; % (num,count))  
+break  
+count -=1  
+else:  
+print(&quot;%d是一个素数&quot; % num)  
+num = int(input(&quot;请输入一个数:&quot;))  
+showMaxFactor(num)  
+</code></pre>
+<p>第三种举例：  </p>
+<pre><code>try:  
+int(123)  
+except ValueError as reason:  
+print(&#39;除错误啦：&#39;+ str(reason))  
+else:  
+print(&quot;没有出现任何的异常！&quot;)  
+</code></pre>
+<p>with是相当于java 1.7更新的内存流自动关闭的特性<br>比如你再读取文件的时候，你读取一个不存在的文件肯定会发生异常，但你发生异常之后使用finally去关闭的时候，你会先没有开启这个文件的open，所以就会出问题，当你使用with之后，如果文件打开之后，他会自动关闭  </p>
+<pre><code>try:  
+with open(&#39;data.txt&#39;,&#39;w&#39;) as f:  
+for wach_line in f:  
+print(each_line)  
+except OSError as reason：  
+print(&quot;出错啦，&quot; + str(reason))  
+</code></pre>
+<h1 id="17-图形用户界面-easygui"><a href="#17-图形用户界面-easygui" class="headerlink" title="17.图形用户界面 easygui"></a>17.图形用户界面 easygui</h1><p>1.下载并解压 <a target="_blank" rel="noopener" href="https://github.com/robertlugg/easygui">https://github.com/robertlugg/easygui</a> 去github下载easygui模块包 然后解压<br>2.使用命令行切换到下载的easygui路径下，然后输入<strong>python setup.py install</strong><br>3实例eg  </p>
+<pre><code>import easygui as g #这里相当于取一个别名 来调用easygui  
+g.msgbox(&quot;图形化窗口&quot;)  
+</code></pre>
+<p>4.扩展阅读:<a target="_blank" rel="noopener" href="https://fishc.com.cn/forum.php?mod=viewthread&tid=46069&extra=page=1&filter=typeid&typeid=403">https://fishc.com.cn/forum.php?mod=viewthread&tid=46069&extra=page%3D1%26filter%3Dtypeid%26typeid%3D403</a> 小甲鱼翻译的easygui中文教程  </p>
+<h1 id="18-面向对象"><a href="#18-面向对象" class="headerlink" title="18.面向对象"></a>18.面向对象</h1><p><strong>1.三大特征 封装、继承、多态 和java一样</strong><br><strong>2.创建类</strong>  </p>
+<pre><code>语法：  
+class 类名:  
+类的属性。。。。  
+类的行为方法。。。  
+eg:  
+class Animal:  
+name = &quot;&quot;  
+age = &quot;&quot;  
+def cry:  
+print(&quot;动物在叫&quot;)  
+</code></pre>
+<p><strong>3.创建对象</strong>  </p>
+<pre><code>语法:  
+对象名 = 类名()  
+eg：  
+dog = animal()  
+</code></pre>
+<p><strong>4.继承</strong>  </p>
+<pre><code>语法:  
+class 类名(父类名):  
+类的属性。。。。  
+类的行为方法。。。  
+eg:  
+class Mylist(list):  
+list1 = Mylist()  
+list1.append(1)  
+</code></pre>
+<p><strong>5.封装私有</strong><br>私有属性、方法——Python并没有真正的私有化支持，但可用下划线得到伪私有 尽量避免定义以下划线开头的变量 （1）_xxx “单下划线 “ 开始的成员变量叫做保护变量，意思是只有类对象（即类实例）和子类对象自己能访问到这些变量，需通过类提供的接口进行访问；不能用’from module import *‘导入 （2）<strong>xxx 类中的私有变量&#x2F;方法名 （Python的函数也是对象，所以成员方法称为成员变量也行得通。）,” 双下划线 “ 开始的是私有成员，意思是只有类对象自己能访问，连子类对象也不能访问到这个数据。 （3）</strong>xxx__ 系统定义名字，前后均有一个“双下划线” 代表python里特殊方法专用的标识，如 <strong>init</strong>() 代表类的构造函数  </p>
+<pre><code>eg:  
+class animal():  
+__name = &quot;&quot;  
+def getName(self):  
+print(self.__name)  
+</code></pre>
+<p><strong>6.self对象的作用和方法，self相当于是java中的this，但不全是，self是一个中间变量，用来做绑定可能比较合适意思，因为，当你的实力对象调用父类的方法的时候，需要通过self来绑定你调用的这个实力对象，但是，这个对象不用显式的传递，只需要在父类的定义方法时，将self写在形式参数的第一个位置，然后在方法里面去使用self来传递参数</strong><br><strong>7.对象和类的一些BIF</strong><br>7.1.insubclass(class,classinfo) 如果第一个参数对象是第二个参数对象的子类的话，就会返回True（非严格性的检查，一个类被认为是他自己的子类，第二个参数可以为一个元素，多个中找一个）<br>7.2 isinstance(Object,classInfo) 这是用来检查一个实例对象是否是一个class的实例 ，就是参数1是否是参数2的实例对象<br>7.3 hasattr(object,name) 判断一个实例对象中是否有指定的属性<br>7.4 getattr(object,name[,defaultValue]) 获取对象的指定name属性值，如果设置了defaultValue的值，在没有获取成功的情况下，则会返回defaultValue的值，如果没有设置defaultValue的值，则会抛出一个attrError<br>7.5 setattr(object,name,value) 设置一个对象的属性值，如果不存在会创建一个并设置这个属性值<br>7.6 delattr(object,name)删除对象的一个属性，如果不存在则会抛出一个异常，存在则删除<br>7.7 property(fget&#x3D;None,fset&#x3D;None,fdel&#x3D;None,fdoc&#x3D;None) 是通过属性来操作属性的方法<br>eg:  </p>
+<pre><code>class book:  
+def __init__(self,pages):  
+self.pages = pages  
+def getPages(self):  
+return self.pages()  
+def setPages(self,pages):  
+self.pages = pages  
+def delPages(self):  
+del self.pages  
+x = property(getPages,setPages,delPages)  
+然后在每个book类的实例中如果想要改变pages只需要调用x来就可以，就相当于操作一个对象  
+</code></pre>
+<p>7.8 “__ init __(self[,attrvalue])” 是构造方法 和ava的构造方法一样，这个方法是不用做返回值，也不能返回值<br>7.9 “__ new __(class[,attrvalue])” 是创建对象的方法<br>7.10 ‘__ del __(self) ’这个是对象在没有任何标签指向该对象时，被垃圾回收机制回收的时候调动的方法 相当于java.的finaline()方法<br><strong>8.魔法方法</strong>  </p>
+<table>
+<thead>
+<tr>
+<th><strong>魔法方法</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td><strong>基本的魔法方法</strong></td>
+</tr>
+<tr>
+<td><strong>new</strong>(cls[, …])</td>
+<td>1. <strong>new</strong> 是在一个对象实例化的时候所调用的第一个方法 2. 它的第一个参数是这个类，其他的参数是用来直接传递给 <strong>init</strong> 方法 3. <strong>new</strong> 决定是否要使用该 <strong>init</strong> 方法，因为 <strong>new</strong> 可以调用其他类的构造方法或者直接返回别的实例对象来作为本类的实例，如果 <strong>new</strong> 没有返回实例对象，则 <strong>init</strong> 不会被调用 4. <strong>new</strong> 主要是用于继承一个不可变的类型比如一个 tuple 或者 string</td>
+</tr>
+<tr>
+<td><strong>init</strong>(self[, …])</td>
+<td>构造器，当一个实例被创建的时候调用的初始化方法</td>
+</tr>
+<tr>
+<td><strong>del</strong>(self)</td>
+<td>析构器，当一个实例被销毁的时候调用的方法</td>
+</tr>
+<tr>
+<td><strong>call</strong>(self[, args…])</td>
+<td>允许一个类的实例像函数一样被调用：x(a, b) 调用 x.<strong>call</strong>(a, b)</td>
+</tr>
+<tr>
+<td><strong>len</strong>(self)</td>
+<td>定义当被 len() 调用时的行为</td>
+</tr>
+<tr>
+<td><strong>repr</strong>(self)</td>
+<td>定义当被 repr() 调用时的行为</td>
+</tr>
+<tr>
+<td><strong>str</strong>(self)</td>
+<td>定义当被 str() 调用时的行为</td>
+</tr>
+<tr>
+<td><strong>bytes</strong>(self)</td>
+<td>定义当被 bytes() 调用时的行为</td>
+</tr>
+<tr>
+<td><strong>hash</strong>(self)</td>
+<td>定义当被 hash() 调用时的行为</td>
+</tr>
+<tr>
+<td><strong>bool</strong>(self)</td>
+<td>定义当被 bool() 调用时的行为，应该返回 True 或 False</td>
+</tr>
+<tr>
+<td><strong>format</strong>(self, format_spec)</td>
+<td>定义当被 format() 调用时的行为</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>有关属性</strong></td>
+</tr>
+<tr>
+<td><strong>getattr</strong>(self, name)</td>
+<td>定义当用户试图获取一个不存在的属性时的行为</td>
+</tr>
+<tr>
+<td><strong>getattribute</strong>(self, name)</td>
+<td>定义当该类的属性被访问时的行为</td>
+</tr>
+<tr>
+<td><strong>setattr</strong>(self, name, value)</td>
+<td>定义当一个属性被设置时的行为</td>
+</tr>
+<tr>
+<td><strong>delattr</strong>(self, name)</td>
+<td>定义当一个属性被删除时的行为</td>
+</tr>
+<tr>
+<td><strong>dir</strong>(self)</td>
+<td>定义当 dir() 被调用时的行为</td>
+</tr>
+<tr>
+<td><strong>get</strong>(self, instance, owner)</td>
+<td>定义当描述符的值被取得时的行为</td>
+</tr>
+<tr>
+<td><strong>set</strong>(self, instance, value)</td>
+<td>定义当描述符的值被改变时的行为</td>
+</tr>
+<tr>
+<td><strong>delete</strong>(self, instance)</td>
+<td>定义当描述符的值被删除时的行为</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>比较操作符</strong></td>
+</tr>
+<tr>
+<td><strong>lt</strong>(self, other)</td>
+<td>定义小于号的行为：x &lt; y 调用 x.<strong>lt</strong>(y)</td>
+</tr>
+<tr>
+<td><strong>le</strong>(self, other)</td>
+<td>定义小于等于号的行为：x &lt;&#x3D; y 调用 x.<strong>le</strong>(y)</td>
+</tr>
+<tr>
+<td><strong>eq</strong>(self, other)</td>
+<td>定义等于号的行为：x &#x3D;&#x3D; y 调用 x.<strong>eq</strong>(y)</td>
+</tr>
+<tr>
+<td><strong>ne</strong>(self, other)</td>
+<td>定义不等号的行为：x !&#x3D; y 调用 x.<strong>ne</strong>(y)</td>
+</tr>
+<tr>
+<td><strong>gt</strong>(self, other)</td>
+<td>定义大于号的行为：x &gt; y 调用 x.<strong>gt</strong>(y)</td>
+</tr>
+<tr>
+<td><strong>ge</strong>(self, other)</td>
+<td>定义大于等于号的行为：x &gt;&#x3D; y 调用 x.<strong>ge</strong>(y)</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>算数运算符</strong></td>
+</tr>
+<tr>
+<td><strong>add</strong>(self, other)</td>
+<td>定义加法的行为：+</td>
+</tr>
+<tr>
+<td><strong>sub</strong>(self, other)</td>
+<td>定义减法的行为：-</td>
+</tr>
+<tr>
+<td><strong>mul</strong>(self, other)</td>
+<td>定义乘法的行为：*</td>
+</tr>
+<tr>
+<td><strong>truediv</strong>(self, other)</td>
+<td>定义真除法的行为：&#x2F;</td>
+</tr>
+<tr>
+<td><strong>floordiv</strong>(self, other)</td>
+<td>定义整数除法的行为：&#x2F;&#x2F;</td>
+</tr>
+<tr>
+<td><strong>mod</strong>(self, other)</td>
+<td>定义取模算法的行为：%</td>
+</tr>
+<tr>
+<td><strong>divmod</strong>(self, other)</td>
+<td>定义当被 divmod() 调用时的行为</td>
+</tr>
+<tr>
+<td><strong>pow</strong>(self, other[, modulo])</td>
+<td>定义当被 power() 调用或 ** 运算时的行为</td>
+</tr>
+<tr>
+<td><strong>lshift</strong>(self, other)</td>
+<td>定义按位左移位的行为：&lt;&lt;</td>
+</tr>
+<tr>
+<td><strong>rshift</strong>(self, other)</td>
+<td>定义按位右移位的行为：&gt;&gt;</td>
+</tr>
+<tr>
+<td><strong>and</strong>(self, other)</td>
+<td>定义按位与操作的行为：&amp;</td>
+</tr>
+<tr>
+<td><strong>xor</strong>(self, other)</td>
+<td>定义按位异或操作的行为：^</td>
+</tr>
+<tr>
+<td><strong>or</strong>(self, other)</td>
+<td>定义按位或操作的行为：</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>反运算</strong></td>
+</tr>
+<tr>
+<td><strong>radd</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rsub</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rmul</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rtruediv</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rfloordiv</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rmod</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rdivmod</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rpow</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rlshift</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rrshift</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rand</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>rxor</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>ror</strong>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><strong>增量赋值运算</strong></td>
+<td><strong>增量赋值运算</strong></td>
+</tr>
+<tr>
+<td><strong>iadd</strong>(self, other)</td>
+<td>定义赋值加法的行为：+&#x3D;</td>
+</tr>
+<tr>
+<td><strong>isub</strong>(self, other)</td>
+<td>定义赋值减法的行为：-&#x3D;</td>
+</tr>
+<tr>
+<td><strong>imul</strong>(self, other)</td>
+<td>定义赋值乘法的行为：*&#x3D;</td>
+</tr>
+<tr>
+<td><strong>itruediv</strong>(self, other)</td>
+<td>定义赋值真除法的行为：&#x2F;&#x3D;</td>
+</tr>
+<tr>
+<td><strong>ifloordiv</strong>(self, other)</td>
+<td>定义赋值整数除法的行为：&#x2F;&#x2F;&#x3D;</td>
+</tr>
+<tr>
+<td><strong>imod</strong>(self, other)</td>
+<td>定义赋值取模算法的行为：%&#x3D;</td>
+</tr>
+<tr>
+<td><strong>ipow</strong>(self, other[, modulo])</td>
+<td>定义赋值幂运算的行为：**&#x3D;</td>
+</tr>
+<tr>
+<td><strong>ilshift</strong>(self, other)</td>
+<td>定义赋值按位左移位的行为：&lt;&lt;&#x3D;</td>
+</tr>
+<tr>
+<td><strong>irshift</strong>(self, other)</td>
+<td>定义赋值按位右移位的行为：&gt;&gt;&#x3D;</td>
+</tr>
+<tr>
+<td><strong>iand</strong>(self, other)</td>
+<td>定义赋值按位与操作的行为：&amp;&#x3D;</td>
+</tr>
+<tr>
+<td><strong>ixor</strong>(self, other)</td>
+<td>定义赋值按位异或操作的行为：^&#x3D;</td>
+</tr>
+<tr>
+<td><strong>ior</strong>(self, other)</td>
+<td>定义赋值按位或操作的行为：</td>
+</tr>
+<tr>
+<td><strong>一元操作符</strong></td>
+<td><strong>一元操作符</strong></td>
+</tr>
+<tr>
+<td><strong>pos</strong>(self)</td>
+<td>定义正号的行为：+x</td>
+</tr>
+<tr>
+<td><strong>neg</strong>(self)</td>
+<td>定义负号的行为：-x</td>
+</tr>
+<tr>
+<td><strong>abs</strong>(self)</td>
+<td>定义当被 abs() 调用时的行为</td>
+</tr>
+<tr>
+<td><strong>invert</strong>(self)</td>
+<td>定义按位求反的行为：~x</td>
+</tr>
+<tr>
+<td><strong>类型转换</strong></td>
+<td><strong>类型转换</strong></td>
+</tr>
+<tr>
+<td><strong>complex</strong>(self)</td>
+<td>定义当被 complex() 调用时的行为（需要返回恰当的值）</td>
+</tr>
+<tr>
+<td><strong>int</strong>(self)</td>
+<td>定义当被 int() 调用时的行为（需要返回恰当的值）</td>
+</tr>
+<tr>
+<td><strong>float</strong>(self)</td>
+<td>定义当被 float() 调用时的行为（需要返回恰当的值）</td>
+</tr>
+<tr>
+<td><strong>round</strong>(self[, n])</td>
+<td>定义当被 round() 调用时的行为（需要返回恰当的值）</td>
+</tr>
+<tr>
+<td><strong>index</strong>(self)</td>
+<td>1. 当对象是被应用在切片表达式中时，实现整形强制转换 2. 如果你定义了一个可能在切片时用到的定制的数值型,你应该定义 <strong>index</strong> 3. 如果 <strong>index</strong> 被定义，则 <strong>int</strong> 也需要被定义，且返回相同的值</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>上下文管理（with 语句）</strong></td>
+</tr>
+<tr>
+<td><strong>enter</strong>(self)</td>
+<td>1. 定义当使用 with 语句时的初始化行为 2. <strong>enter</strong> 的返回值被 with 语句的目标或者 as 后的名字绑定</td>
+</tr>
+<tr>
+<td><strong>exit</strong>(self, exc_type, exc_value, traceback)</td>
+<td>1. 定义当一个代码块被执行或者终止后上下文管理器应该做什么 2. 一般被用来处理异常，清除工作或者做一些代码块执行完毕之后的日常工作</td>
+</tr>
+<tr>
+<td><strong>容器类型</strong></td>
+<td><strong>容器类型</strong></td>
+</tr>
+<tr>
+<td><strong>len</strong>(self)</td>
+<td>定义当被 len() 调用时的行为（返回容器中元素的个数）</td>
+</tr>
+<tr>
+<td><strong>getitem</strong>(self, key)</td>
+<td>定义获取容器中指定元素的行为，相当于 self[key]</td>
+</tr>
+<tr>
+<td><strong>setitem</strong>(self, key, value)</td>
+<td>定义设置容器中指定元素的行为，相当于 self[key] &#x3D; value</td>
+</tr>
+<tr>
+<td><strong>delitem</strong>(self, key)</td>
+<td>定义删除容器中指定元素的行为，相当于 del self[key]</td>
+</tr>
+<tr>
+<td><strong>iter</strong>(self)</td>
+<td>定义当迭代容器中的元素的行为</td>
+</tr>
+<tr>
+<td><strong>reversed</strong>(self)</td>
+<td>定义当被 reversed() 调用时的行为</td>
+</tr>
+<tr>
+<td><strong>contains</strong>(self, item)</td>
+<td>定义当使用成员测试运算符（in 或 not in）时的行为</td>
+</tr>
+</tbody></table>
+
+      </div>
+    </div>
+</div>
+
+<div class="post-category">
+
+    <div id="p-meta-i">
+        
+          
+              
+                <a class="hover-with-bg" href="/tags/Python/"># Python</a>
+              
+          
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+
+  <div class="post-copyright">
+    <p style="margin: 5px 0;">文章作者：<a href="/">Yum</a></p>
+    <p style="margin: 5px 0;">文章链接：<a href="https://blog.lce.land/2023/06/01/python%E5%9F%BA%E7%A1%80/">https://blog.lce.land/2023/06/01/python%E5%9F%BA%E7%A1%80/</a></p>
+    <p style="margin: 5px 0;">版权声明：本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处，谢谢。</p>
+  </div>
+  
+</div>
+
+</article>
+
+
+        </div>
+        
+<footer class="text-center">
+    
+    
+    
+    
+    
+    <p>&copy;  2020 - 2023&nbsp;&nbsp;有限的时间卷无限的知识</p>
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p>
+    
+    
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+    
+    
+      <a class="toc-btn" id="share-btn"><i>
+        <svg t="1670124379155" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2683" width="25" height="25"><path d="M395.946667 234.666667v64H256v469.333333h512V522.666667h64V768a64 64 0 0 1-64 64H256a64 64 0 0 1-64-64V298.666667a64 64 0 0 1 64-64h139.946667z m335.850666-87.914667l150.848 150.826667-158.378666 158.4-45.269334-45.248L748.394667 341.333333H672c-121.685333 0-220.714667 97.024-223.914667 217.941334L448 565.333333v85.333334h-64v-85.333334C384 406.272 512.938667 277.333333 672 277.333333h99.861333l-85.312-85.333333 45.248-45.248z" p-id="2684" fill="var(--first-text-color)"></path></svg>
+      </i></a>
+    
+    <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+      <i id="i-up"></i>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+    <script>
+        query("#share-btn")[0].onclick = async () => {
+            let url = `${location.protocol}//${location.hostname}${location.port ? ":"+location.port:location.port}${location.pathname}#read=${sessionStorage.getItem(location.pathname+"_read_y") || ""}`;
+            try {
+                await navigator.clipboard.writeText(url);
+                prompt_core("分享链接已经复制至剪贴板", 4800, true);
+            } catch(e) {
+                prompt_core("分享链接复制失败，请手动复制<br/>"+url, 4800, false);
+            }
+        }
+    </script>
+
+
+
+
+
+
+
+    <script>
+        const getScrollPosition = (el = window) => ({
+            x: el.pageXOffset !== undefined ? el.pageXOffset : el.scrollLeft,
+            y: el.pageYOffset !== undefined ? el.pageYOffset : el.scrollTop
+        });
+        // 此处的 750 是「页面元素的最大宽度」
+        var wx = document.getElementsByClassName("article-m")[0].clientWidth;
+        var wy = document.getElementsByClassName("article-m")[0].clientHeight;
+        function windowScroll() {
+            // 反复修改 确保页面尺寸不改变
+            wx = document.getElementsByClassName("article-m")[0].clientWidth;
+            wy = document.getElementsByClassName("article-m")[0].clientHeight;
+            let y = Math.round(getScrollPosition().y);
+            // console.log(y);
+            // 组合字符串，同时记录页面坐标，页面宽度和高度
+            let p = `${y}:${wx}:${wy}`;
+            // 写入到 sessionStorage 中
+            sessionStorage.setItem(location.pathname + "_read_y", p);
+        }
+        // URL 中是否包含传递的坐标信息
+        setTimeout(() => {
+            if (location.hash.split("#read=").length > 1) {
+                prompt_core("已有阅读进度，正在跳转", 4800, true);
+                // 分离字符串
+                let read_y = location.hash.split("#read=")[1];
+                read_y = read_y.split(":");
+                // 组合乘积，顺滑移动至坐标
+                window.scrollTo({top: Math.round(Number(read_y[0]) * Number(read_y[1] * Number(read_y[2] / wx / wy))), behavior: "smooth"});
+            } else {
+                // 从 sessionStorage 中获取
+                let read_y = sessionStorage.getItem(location.pathname + "_read_y") || "0:0:0";
+                read_y = read_y.split(":");
+                if (read_y[0] != "0") prompt_core("已有阅读进度，正在跳转", 4800, true);
+                window.scrollTo({top: Math.round(Number(read_y[0]) * Number(read_y[1] * Number(read_y[2] / wx / wy))), behavior: "smooth"});
+            }
+        }, 500);
+        window.onscroll = windowScroll;
+    </script>
+
+
+
+
+
+        </div>
+        <div id="css-loading">
+            <h3 class="text-center">加载中...</h3>
+        </div>
+        
+    </body>
+</html>

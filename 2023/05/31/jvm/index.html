@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>JVM 学习 - 知识，与你分享。</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="JVM学习记录~~~">
+    <meta name="author" content="Yum">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="JVM 学习"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn{
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 960px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: var(--sec-bkg);
+    display: block;
+    padding: 0.9rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header>
+            
+<div class="header__left">
+	<a href="/" class="button"><span class="logo__text">我的笔记</span></a>
+</div>
+<div class="header__right">
+	<div class="navbar__menus">
+		
+	</div>
+	
+	<a href="/search/" class="button">
+		<div id="btn-search">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32">
+				<path
+					d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z">
+				</path>
+			</svg>
+		</div>
+	</a>
+	
+	<a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
+				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
+		</div>
+	</a>
+	<a href="javaScript:void(0);" class="dropdown-icon button">
+		<div id="btn-dropdown">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32" stroke-linecap="round">
+				<path
+					d="M903.43 561.52H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 204.31H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 918.73H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24z"
+					fill="currentColor"></path>
+			</svg>
+		</div>
+	</a>
+	<div class="dropdown-menus" id="dropdown-menus">
+		
+	</div>
+</div>
+
+        </header>
+        <div id="top"></div>
+        <div id="page-main" class="main-content">
+        <div class="mg-top">
+            
+
+<article class="page">
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>JVM 学习</h3>
+    
+      <span class="post-meta-label">
+        Yum
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2023-05-31 12:43" pubdate>
+          2023-05-31
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 4k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p><strong>JVM生命周期：</strong></p>
+<p>﻿</p>
+<p>14-JVM的生命周期 P14 - 00:05</p>
+<p>﻿</p>
+<p><strong>1.虚拟机的启动</strong></p>
+<p>java虚拟机的启动是通过引导类加载器（bootstrap class loader） 创建一个初始类（initial class）来完成的，这个类是有虚拟机的集体实现指定的</p>
+<p><strong>2.虚拟机的执行</strong></p>
+<p>一个运行中的java虚拟机有着一个清晰的任务：执行java程序。</p>
+<p>程序开始执行时他才运行，程序结束时他就停止</p>
+<p>执行一个所谓的java程序的时候，真真正正在执行的是一个叫做java虚拟机的进程</p>
+<p><strong>3.虚拟机的退出</strong></p>
+<p>程序正常执行结束</p>
+<p>程序在执行过程和总遇到了异常或者错误而异常终止</p>
+<p>由于操作系统出现错误而导致java虚拟机进程终止</p>
+<p>某线程调用Runtime类或者System类的exit方法，或者Runtime类的halt方法，并且java安全管理器也允许这次exit或者halt操作 （System.exit方法实际上也是去调用了Runtime类的halt方法（Runtime是一个饿汉式加载的运行时数据区（Runtime Data Area）每个运行时的虚拟机独有一份 包含了 方法区、java栈、本地方法栈、堆、程序计数器））</p>
+<p>除此之外，JNT（Java Native Interface）规范描述了用JNT Invocation APi来加载或卸载Java虚拟机时，Java虚拟机的退出情况</p>
+<p><strong>JVM的发展历程</strong>﻿</p>
+<p><strong>1.Sun Classis VM</strong> 世界第一款商用java虚拟机 1.4被淘汰 内部只提供解释器（不提供JIT即时编译器）效率底下。</p>
+<p>﻿</p>
+<p>15-SUN Classic VM的介绍 P15 - 00:06</p>
+<p>﻿</p>
+<p><strong>2.Exact V****M</strong>准确式内存管理（可以知道内存中某个位置的数据具体是什么类型的数据）热点探测，编译器和结束器混合工作模式</p>
+<p>﻿</p>
+<p>16-Exact VM的介绍 P16 - 00:02</p>
+<p>﻿</p>
+<p><strong>3.HotSpot V****M</strong>（目前正在使用中）JDK3之后到目前一直是作为默认虚拟机，Oracle JDK&#x2F;Open JDK的默认虚拟机，服务器，桌面，移动端，嵌入式都有使用，拥有热点探测技术 （方法区的概念只有HotSpot虚拟机有，jRock&#x2F;J9都没有方法去概念）</p>
+<p>﻿</p>
+<p>17-HotSpot VM的介绍 P17 - 00:02</p>
+<p>﻿</p>
+<p><strong>4.JRockit V****M</strong>（BEA（已经被Oracle收购）） 内部不包含解释器实现，全部代码都靠即时编译器编译之后执行，世界上最快的JVM</p>
+<p>﻿</p>
+<p>18-JRockit VM的介绍 P18 - 00:03</p>
+<p>﻿</p>
+<p><strong>5.J9 VM（IBM）</strong> 执行IBM公司的产品速度快，定位接近HotSpot 其他产品优化不及IBM公司产品，不稳定</p>
+<p>﻿</p>
+<p>19-IBM J9 VM的介绍 P19 - 00:03</p>
+<p>﻿</p>
+<p><strong>6.KVM和CDC &#x2F;CLDC HotSpot</strong> （CDC &#x2F;CLDC HotSpot java ME产品线上的两款虚拟机）KVM是进军移动端的JVM用量小（android 和IOS占据）</p>
+<p>﻿</p>
+<p>20-KVM、CDC、CLDC的介绍 P20 - 00:02</p>
+<p>﻿</p>
+<p><strong>7.Azul VM</strong> 特定硬件平台绑定，软硬件配合的专有虚拟机（每个Auzl vm实例都可以管理至少数十个CPU和数百GB内存的硬件资源，并提供在巨大内存范围内，实现可控的GC时间的垃圾收集器，专有硬件优化的线程调度等优秀特性）</p>
+<p>﻿</p>
+<p>21-Azul VM和BEA Liquid VM的介绍 P21 - 00:01</p>
+<p>﻿</p>
+<p><strong>8.Liquid VM</strong>和Azul VM类似 特定平台性能优异</p>
+<p>﻿</p>
+<p>21-Azul VM和BEA Liquid VM的介绍 P21 - 00:03</p>
+<p>﻿</p>
+<p><strong>9.Apache Harmony VM</strong> IBM和intel联合开发开元的JVM,受到同样开源的OpenJDK的压制，Sun坚决不让Harmony获得JCP认证，最终与2011年退役，IBM转而参与开发OpenJDK，没有大规模商用，但是他的java类库被吸纳进Android SDK中</p>
+<p>﻿</p>
+<p>22-Apache Harmony的介绍 P22 - 00:01</p>
+<p>﻿</p>
+<p><strong>10 Microsoft JVM</strong> windows xp 之前在windows平台下最好的JVM，后期被抹除</p>
+<p>﻿</p>
+<p>23-Microsoft JVM和TaobaoJVM P23 - 00:04</p>
+<p>﻿</p>
+<p><strong>11 Taobao JVM</strong> 基于OpenJDK自己定制的ALIBABA JDK 应用在阿里产品上性能高，硬件严重依赖intel的cpu,损失了兼容性，但是提高了性能</p>
+<p>﻿</p>
+<p>23-Microsoft JVM和TaobaoJVM P23 - 00:13</p>
+<p>﻿</p>
+<p>创新的GCIH（GC invisible heap）技术实现了off-heap,即将生命周期较长的java对象从heap（堆）中移到heap之外，并且GC不唔唔管理GCIH内部的java对象，以此达到降低GC的回收频率和提升GC的回收效率目的</p>
+<p>GCIH中的对象还能在多个Java虚拟机进程中实现共享</p>
+<p>使用crc32指令实现JVM intrinsic 降低JNT的调用开销</p>
+<p>PMU headware和Java profiling tool 和诊断协助功能</p>
+<p>针对大数据场景的ZenGC</p>
+<p><strong>12 Dalvik VM （不是java虚拟机的虚拟机）</strong>google开发应用Android 没有遵循java虚拟机规范 执行文件是dex格式文件，基于寄存器架构</p>
+<p>﻿</p>
+<p>24-Dalvik VM及其他虚拟机的介绍 P24 - 00:01</p>
+<p>﻿</p>
+<p><strong>13.Graal VM（Oracle 新虚拟机）</strong>在HotSpot vm基础上增强而成的跨语言全栈虚拟机，可以作为任何语言的运行平台使用，语言包括（Java、Scala、Groovy、Kotlin、C、C++、JavaScript、Ruby、Python、R等）</p>
+<p>﻿</p>
+<p>25-Graal VM的介绍 P25 - 00:03</p>
+<p>﻿</p>
+<p>支持不同语言中混用对方的借口和对象，支持这些语言使用已经编译好的本地库文件</p>
+<p>工作原理时间爱那个这些语言的源代码或者源代码编译后的中间格式，通过解释器转换为能被Graal VM接受的中间表示，GraalVM 提供Truffle工具集快速构建面向一种新语言的解释器，在运行时还能进行即使编译优化，获得比原生编译器更加优秀的执行效率</p>
+<p>如果说HotSpot有一天真的被取代，Graal VM希望最大，但是Java的软件生态没有丝毫变化</p>
+<p><strong>第二章 类加载子系统</strong></p>
+<p><strong>1.Class Loader SubSystem 类加载子系统</strong></p>
+<p><strong>Class Files-&gt;Loading-&gt;Linking-&gt;Initialization</strong></p>
+<p><strong>1.1.Loading 区域 （负责从文件系统或者网络中加载Class文件，class文件在文件开头有特定的文件标识，只负责加载，是否能运行则由执行引擎决定）</strong></p>
+<p>﻿</p>
+<p>28-类的加载过程一：Loading P28 - 00:01</p>
+<p>Boolstrap Class Loader 引导类加载器、Extension ClassLoader 扩展类加载器、System ClassLoader 应用类&#x2F;系统类加载器</p>
+<p>方法区域（7之前永久代，7之后源空间）</p>
+<p>加载方式：</p>
+<p>1.从本地系统直接加载</p>
+<p>2.通过我网络获取，典型场景：Web Applet</p>
+<p>3.从zip压缩包中独去，成为日后jar.war格式的基础</p>
+<p>4.运行时计算产生，使用最多的，动态代理技术</p>
+<p>5.有其他文件身成 典型场景，jsp应用</p>
+<p>6.从专有数据库中提取.class文件，比较少见</p>
+<p>7.从加密文件中获取，典型的放class文件被反编译的保护措施</p>
+<p><strong>1.1.1 类加载器的分类</strong></p>
+<p>JVM支持两种类型的类加载器，分别为引导类加载器（bootstrap ClassLoader）和自定义类加载器（User-Defined ClassLoader） 这里的自定义类加载器指的是将所有派生于抽象类ClassLoader的类加载器都划分为自定义加载器，不是指有开发人员自定义的类加载器（Extension Class Loader#扩展类加载器、System Class Loader#系统类加载器都属于自定义加载器）</p>
+<p><strong>BootstrapClassLoader</strong></p>
+<p>﻿</p>
+<p>32-引导类、扩展类、系统类加载… P32 - 00:17</p>
+<p>﻿</p>
+<p>BootstrapClassLoader 由c&#x2F;c++编写，嵌套在jvm内部 只加载java的核心类库 （&#x2F;JAVA_HOME&#x2F;jre&#x2F;lib&#x2F;rt.jar、resources.jar、或者sun.boot.class.path路径下的内容），用于提供jvm自身需要的类，并不是继承自java.lang.Classloader 没有父加载器，加载扩展类加载器和程序类接载其，并指定为他们的父类，处于安全考虑，Bootstrap启动类加载器只加载包名为java、javax、sun等开头的类</p>
+<p><strong>ExtensionClassLoader</strong></p>
+<p>﻿</p>
+<p>32-引导类、扩展类、系统类加载… P32 - 03:59</p>
+<p>﻿</p>
+<p>由java编写，由sun.misc.Launcher$ExtClassLoader内部类实现，派生于ClassLoader类，父类加载器为BootstrapClassLoader 启动类加载器，从java.ext.dirs系统属性所指定的目录中加载类库，或从JAVA_HOME&#x2F;jre&#x2F;lib&#x2F;ext子目录（扩展目录）下加载类库，如果用户创建的JAR放在此目录下，也会自动由扩展类加载器加载</p>
+<p><strong>AppClassLoader</strong></p>
+<p>﻿</p>
+<p>32-引导类、扩展类、系统类加载… P32 - 05:04</p>
+<p>﻿</p>
+<p>java语言编写，由sun.misc.Launcher$AppClassLoader实现，派生与ClassLoader，父类加载器为扩展类加载器，它负责加载环境变量classpath或者系统属性，java.class.path指定下的类库，该类是程序中的默认加载器，一般来说，java应用的类都是由它来加载完成，通过classLoader#getSystemClassLoader（）方法可以获取到该类</p>
+<p><strong>用户自定义类加载器</strong></p>
+<p>﻿</p>
+<p>33-为什么需要用户自定义类加载… P33 - 00:05</p>
+<p>﻿</p>
+<p>一般用不到，可能的情况</p>
+<p>隔离加载类、修改加载的方式、扩展加载源、防止源码泄露</p>
+<p>步骤</p>
+<p>1.继承抽象类java.lang.ClassLoader 实现自己的类加载器</p>
+<p>2.在JDK1.2之前，在自定义类加载器之前，总会去继承ClassLoader类并重写loadClass（）方法，从而实现自定义的类加载器，但是在JDK1.2之后，不在建议用户覆盖loadClass()方法，二十建议把自定义的类加载逻辑卸载findClass方法中</p>
+<p>3.如果没有太过于负责的需求，可以直接继承URLClassLoader类，这样就可以避免自己去编写findClass（）方法及获取字节码流的方式。</p>
+<p><strong>双亲委派机制</strong></p>
+<p>﻿</p>
+<p>35-双亲委派机制的工作原理及演示 P35 - 00:00</p>
+<p>﻿</p>
+<p>1.如果一个类的加载器收到类加载请求，它并不会自己先去加载，而是把这个请求委托给父类去执行加载，</p>
+<p>2.如果父类加载器还存在其父类加载器，则进一步向上委托，依此递归，请求最终将达到顶层类加载器</p>
+<p>3.如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派机制</p>
+<p>﻿</p>
+<p>36-双亲委派机制的优势 P36 - 01:54</p>
+<p>﻿</p>
+<p><strong>双亲委派机制的优势</strong>：</p>
+<p>1.避免类的重复加载</p>
+<p>2.保护程序安全，防止核心api被随意篡改</p>
+<p><strong>沙箱安全机制</strong></p>
+<p>﻿</p>
+<p>37-沙箱安全机制 P37 - 00:28</p>
+<p>﻿</p>
+<p>eg：自定义String类，但是在加载自定义的String类的时候会率先使用引导类加载器加载，而引导类加载器在加载过程中，会先加载JDK自带的文件，（rt.jar包中的java\lang\String.class）报错信息说没有main方法就是因为加载的rt.jar中的String类，这样保证对java核心源代码的保护，这就是沙箱安全机制</p>
+<p><strong>其他：</strong></p>
+<p>﻿</p>
+<p>38-类的主动使用与被动使用等 P38 - 00:14</p>
+<p>﻿</p>
+<p>在JVM中，表示两个class对象是否为同一个类存在两个必要条件：</p>
+<p>类的完整类名必须一致，包括包名</p>
+<p>加载这个类的ClassLoader（指ClassLoader实例对象）必须相同</p>
+<p>换句话说，在jvm中，即使这两个类对象（class对象）来源同一个Class文件，被同一个虚拟机所加载，但只要他们的ClassLoader实力对象不同，那么这两个类对象也是不相等的</p>
+<p>JVM必须知道一个类型是由启动类加载器加载的还是由用户类加载器加载的，如果一个类型是用户类加载器加载的，那么JVM会将这个类的加载器的一个引用作为类型信息的一部分保存在方法区中，当解析一个类的另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的</p>
+<p>类的主动使用和被动使用</p>
+<p>Java程序对类的使用方式分为，主动使用和被动使用</p>
+<p>主动使用，又分为7种情况</p>
+<p>1.创建类的实例</p>
+<p>2.访问某个类或接口的静态资源，或者对该静态变量赋值</p>
+<p>3.调用类的静态方法</p>
+<p>4.反射（比如：Class.forName(“xxx.xxx.xxx”)）</p>
+<p>5.初始化一个类的子类</p>
+<p>6.Java虚拟机启动时被标名为启动类的类</p>
+<p>7.JDK7开始提供的动态语言支持：Java.lang.invoke.MethodHandle实例的解析结果，REF_getStatic、Ref_putStatic、REF_invokeStatic句柄对应的类没有初始化，则初始化</p>
+<p>除了以上的七种情况，其他使用java类的方式都被看做是对类的被动使用，都不会导致类的初始化</p>
+<p><strong>1.2.Linking 区域</strong></p>
+<p>﻿</p>
+<p>29-类的加载过程二：Linking P29 - 00:01</p>
+<p>﻿</p>
+<p><strong>verify验证</strong></p>
+<p>目的在于确保class文件的字节流中包含信息符合当前虚拟机要求，包含在呢个被加载类的正确性，不会危害虚拟机本身</p>
+<p>主要有四种验证，文件格式验证，元数据验证，字节码验证，符号引用验证</p>
+<p><strong>Prepare准备</strong></p>
+<p>为类变量分配内存并设置该类的默认初始值，即零值</p>
+<p>这里不包含用final修饰的static,因为final在变异的时候就会分配了，准备阶段会显式初始化</p>
+<p>这里不会为实力变量分配初始化，类变量会分配在方法区中，而实力变量是会随着对象一起分配到java堆中</p>
+<p><strong>Resolve解析</strong></p>
+<p>将常量池内的符号引用转换为直接引用的过程</p>
+<p>事实上，解析操作往往会伴随着JVM在执行初始化之后再执行</p>
+<p>符号引用就是一族符号来描述所引用的目标，符号引用的字面量形式明确定义在《java虚拟机规范》的class文件格式中，直接引用就是窒息那个目标的指针，相对片量或一个间接定位到目标的句柄</p>
+<p>解析动作主要针对类或接口，字段，类方法，接口方法，方法类型等，对影响量池中的CONSTANT_Class_info、CONSTANT_Fieldref_info、CONSTANT_Methodref_info等。</p>
+<p><strong>1.3.Initialization 区域 初始化 静态变量显式初始化</strong></p>
+<p>﻿</p>
+<p>30-类的加载过程三：Initialization P30 - 02:00</p>
+<p>﻿</p>
+<p>初始化阶段就是执行类构造器方法<clinit>()的过程</p>
+<p>此方法不需要定义，是有javac编译器自动收集类中的所有类变量的赋值动作和静态代码块中的语句合并而来</p>
+<p>构造方法中指令按照语句在源文件中出现的顺序执行</p>
+<p><clinit>()不同于类的构造器。（构造器是虚拟机视角下的<init>()）</p>
+<p>若该类具有父类，JVM会保证子类的<clinit>()执行前，父类的<clinit>()已经执行完毕</p>
+<p>虚拟机必须保证一个类的<clinit>()方法在多线程下被同步加锁。</p>
+<p><strong>2. Runtime Data Areas 运行时数据区</strong></p>
+<p>﻿</p>
+<p>39-运行时数据区内部结构 P39 - 07:27</p>
+<p>﻿</p>
+<p><strong>2.1 Method Area 方法区</strong></p>
+<p><strong>2.2 Heap Area 堆区 多个线程共享</strong></p>
+<p><strong>2.3 Stack Area 栈区 每个线程独一份</strong></p>
+<p><strong>2.4 PC Registers pc寄存器（程序计数器） 每个线程独一份</strong></p>
+<p><strong>2.5 Native Method Stack 本地方法栈</strong></p>
+<p><strong>2.6 Metaspace（元数据区域）&#x2F;&#x2F;v8之后才有的之前是永久代</strong></p>
+<p>java虚拟机定义了若干中程序运行期间会使用到的运行时数据区，其中有一种会随着虚拟机启动而创建，随着随你及推出而销毁，另一些则是与线程一一对应的，这些与线程对应的数据区域会随着线程开始和结束而创建和销毁，</p>
+<p>即：每个线程，独立包括程序计数器，虚拟机栈，本地方法栈;线程间共享：堆，堆外内存、方法区（永久代或者元空间、代码缓存）</p>
+<p><strong>3.Execution Engine 执行引擎</strong></p>
+<p><strong>3.1Interpreter 解释器</strong></p>
+<p><strong>3.2 JIT Compiler 即时编译器 （中间代码生成器、代码优化器、目标代码生成器）</strong></p>
+<p><strong>3.3 Garbage Collection GC垃圾回收器</strong></p>
+<p><strong>如果自己手写虚拟机 需要考虑 类加载子系统以及执行引擎</strong></p>
+<ul>
+<li>1</li>
+</ul>
+
+      </div>
+    </div>
+</div>
+
+<div class="post-category">
+
+    <div id="p-meta-i">
+        
+          
+              
+                <a class="hover-with-bg" href="/tags/JVM-%E5%AD%A6%E4%B9%A0/"># JVM 学习</a>
+              
+          
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+
+  <div class="post-copyright">
+    <p style="margin: 5px 0;">文章作者：<a href="/">Yum</a></p>
+    <p style="margin: 5px 0;">文章链接：<a href="https://blog.lce.land/2023/05/31/jvm/">https://blog.lce.land/2023/05/31/jvm/</a></p>
+    <p style="margin: 5px 0;">版权声明：本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处，谢谢。</p>
+  </div>
+  
+</div>
+
+</article>
+
+
+        </div>
+        
+<footer class="text-center">
+    
+    
+    
+    
+    
+    <p>&copy;  2020 - 2023&nbsp;&nbsp;有限的时间卷无限的知识</p>
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p>
+    
+    
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+    
+    
+      <a class="toc-btn" id="share-btn"><i>
+        <svg t="1670124379155" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2683" width="25" height="25"><path d="M395.946667 234.666667v64H256v469.333333h512V522.666667h64V768a64 64 0 0 1-64 64H256a64 64 0 0 1-64-64V298.666667a64 64 0 0 1 64-64h139.946667z m335.850666-87.914667l150.848 150.826667-158.378666 158.4-45.269334-45.248L748.394667 341.333333H672c-121.685333 0-220.714667 97.024-223.914667 217.941334L448 565.333333v85.333334h-64v-85.333334C384 406.272 512.938667 277.333333 672 277.333333h99.861333l-85.312-85.333333 45.248-45.248z" p-id="2684" fill="var(--first-text-color)"></path></svg>
+      </i></a>
+    
+    <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+      <i id="i-up"></i>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+    <script>
+        query("#share-btn")[0].onclick = async () => {
+            let url = `${location.protocol}//${location.hostname}${location.port ? ":"+location.port:location.port}${location.pathname}#read=${sessionStorage.getItem(location.pathname+"_read_y") || ""}`;
+            try {
+                await navigator.clipboard.writeText(url);
+                prompt_core("分享链接已经复制至剪贴板", 4800, true);
+            } catch(e) {
+                prompt_core("分享链接复制失败，请手动复制<br/>"+url, 4800, false);
+            }
+        }
+    </script>
+
+
+
+
+
+
+
+    <script>
+        const getScrollPosition = (el = window) => ({
+            x: el.pageXOffset !== undefined ? el.pageXOffset : el.scrollLeft,
+            y: el.pageYOffset !== undefined ? el.pageYOffset : el.scrollTop
+        });
+        // 此处的 750 是「页面元素的最大宽度」
+        var wx = document.getElementsByClassName("article-m")[0].clientWidth;
+        var wy = document.getElementsByClassName("article-m")[0].clientHeight;
+        function windowScroll() {
+            // 反复修改 确保页面尺寸不改变
+            wx = document.getElementsByClassName("article-m")[0].clientWidth;
+            wy = document.getElementsByClassName("article-m")[0].clientHeight;
+            let y = Math.round(getScrollPosition().y);
+            // console.log(y);
+            // 组合字符串，同时记录页面坐标，页面宽度和高度
+            let p = `${y}:${wx}:${wy}`;
+            // 写入到 sessionStorage 中
+            sessionStorage.setItem(location.pathname + "_read_y", p);
+        }
+        // URL 中是否包含传递的坐标信息
+        setTimeout(() => {
+            if (location.hash.split("#read=").length > 1) {
+                prompt_core("已有阅读进度，正在跳转", 4800, true);
+                // 分离字符串
+                let read_y = location.hash.split("#read=")[1];
+                read_y = read_y.split(":");
+                // 组合乘积，顺滑移动至坐标
+                window.scrollTo({top: Math.round(Number(read_y[0]) * Number(read_y[1] * Number(read_y[2] / wx / wy))), behavior: "smooth"});
+            } else {
+                // 从 sessionStorage 中获取
+                let read_y = sessionStorage.getItem(location.pathname + "_read_y") || "0:0:0";
+                read_y = read_y.split(":");
+                if (read_y[0] != "0") prompt_core("已有阅读进度，正在跳转", 4800, true);
+                window.scrollTo({top: Math.round(Number(read_y[0]) * Number(read_y[1] * Number(read_y[2] / wx / wy))), behavior: "smooth"});
+            }
+        }, 500);
+        window.onscroll = windowScroll;
+    </script>
+
+
+
+
+
+        </div>
+        <div id="css-loading">
+            <h3 class="text-center">加载中...</h3>
+        </div>
+        
+    </body>
+</html>
